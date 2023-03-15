@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BulletImage extends androidx.appcompat.widget.AppCompatImageView {
     private Player.Type playerType;
+    private Boolean status = true;
 
     public BulletImage(@NonNull @NotNull Context context) {
         super(context);
@@ -28,5 +29,13 @@ public class BulletImage extends androidx.appcompat.widget.AppCompatImageView {
 
     public void setPlayerType(Player.Type playerType) {
         this.playerType = playerType;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

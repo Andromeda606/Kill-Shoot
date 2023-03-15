@@ -44,6 +44,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
+        <TextView
+                android:text="100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/enemyHealth" android:layout_gravity="right"
+                android:textSize="34sp" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:layout_marginTop="30dp" android:layout_marginRight="30dp"/>
+        <TextView
+                android:text="100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/playerHealth"
+                android:textSize="34sp" android:textColor="#FFFFFF" android:textStyle="bold"
+                android:layout_marginTop="30dp" android:layout_marginLeft="30dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView3"
+                android:layout_gravity="center_horizontal"/>
 
     </FrameLayout>
 </FrameLayout>
