@@ -4,6 +4,7 @@ import android.util.Log;
 import com.androsoft.ping_pong.connection.ConnectionHelper;
 import com.androsoft.ping_pong.connection.StreamController;
 import com.androsoft.ping_pong.connection.bluetooth.ConnectedThread;
+import com.androsoft.ping_pong.util.Device;
 import com.androsoft.ping_pong.util.Game;
 
 public class Network implements ConnectionHelper {
@@ -16,7 +17,7 @@ public class Network implements ConnectionHelper {
     @Override
     public StreamController createConnectedThread() throws Exception {
         return new NetworkConnectedThread(
-                (Game.DEVICE_NAME.contains("S20 FE")) ?
+                (Device.getDeviceName().contains("S20 FE")) ?
                         "172.30.146.0" :
                     "172.30.163.106"
                 ,11000);
