@@ -61,8 +61,10 @@ public class BulletPhysics {
 
     private BulletImage createBullet() {
         BulletImage bulletImage = new BulletImage(activity);
-        bulletImage.setImageResource(R.drawable.ic_android_black_24dp);
+        bulletImage.setImageResource(R.drawable.ic_game_bullet1);
         bulletImage.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+        if(Player.Type.PLAYER2 == playerType)
+            bulletImage.setRotation(180);
         bulletImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         bulletImage.setPlayerType(playerType);
         return bulletImage;

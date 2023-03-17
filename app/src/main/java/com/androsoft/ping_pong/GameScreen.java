@@ -100,20 +100,20 @@ public class GameScreen extends Fragment {
             connectedThread.onMessageEvent(data -> {
                 Log.wtf("Data", data);
                 getActivity().runOnUiThread(() -> {
-                    if(data.equals("SHOOT")){
+                    if (data.equals("SHOOT")) {
                         bulletPhysicsEnemy.shoot();
                         return;
                     }
                     float x, y;
                     String[] xy = data.split(",");
-                    if(xy.length == 2){
+                    if (xy.length == 2) {
                         x = Float.parseFloat(xy[0]);
                         y = Float.parseFloat(xy[1]);
                         Log.wtf("OHHHHHAAA", x + ":" + y);
                         ImageView enemy = Game.getEnemyPlayer();
-                        Log.wtf("Screen.angleToWidth(x)", String.valueOf(Screen.angleToWidth(x)));
-                        enemy.setX(Game.SCREEN_WIDTH - Screen.angleToWidth(x));
-                        enemy.setY(Screen.angleToHeight(y));
+                        Log.wtf("Screen.angleToWidth(x), Screen.angleToHeight(y)", String.valueOf(Screen.angleToWidth(x) + "," + Screen.angleToHeight(y)));
+                        enemy.setX(Screen.angleToWidth(x));
+                        enemy.setY(Screen.SCREEN_HEIGHT - Screen.angleToHeight(y));
                     }
                 });
 
@@ -136,8 +136,8 @@ public class GameScreen extends Fragment {
             float dx = (float) Math.sin(Math.toRadians(angle)) * width;
             float dy = (float) Math.cos(Math.toRadians(angle)) * player.getHeight();
 
-            dx = player.getTranslationX() + dx * strength / 500;
-            dy = player.getTranslationY() + dy * strength / 500;
+            dx = player.getTranslationX() + dx * strength / 250;
+            dy = player.getTranslationY() + dy * strength / 250;
 
             float currentX = player.getX() + dx;
             float currentY = player.getY() + dy;
@@ -147,38 +147,38 @@ public class GameScreen extends Fragment {
             //Log.wtf("currentX", currentX + ": currentY" + currentY + " - " + Game.toAngle(heightLimit, wall) + ":" + Game.toAngle(widthLimit, wall));
             StringBuilder stringBuilder = new StringBuilder();
             if (
-                    currentX <= widthLimit - Game.toAngle(widthLimit, wall)
-                            && currentX >= Game.toAngle(widthLimit, 25)
+                    currentX <= widthLimit - Game.toAngle(widthLimit, 5)
+                            && currentX >= Game.toAngle(widthLimit, wall)
             ) {
                 player.setTranslationX(dx);
             }
             stringBuilder.append(Screen.widthToAngle(player.getX()));
-            Log.wtf("Game.toAngle(heightLimit, 1)", currentY + "::" + Game.toAngle(heightLimit, wall));
             if (
-                    currentY <= heightLimit - Game.toAngle(heightLimit, 1)
-                            && currentY >= Game.toAngle(heightLimit, 1) //todo bunu ayarla, tabletlerde ciddi sorun yaratabilir
+                    currentY <= heightLimit - Game.toAngle(heightLimit, wall)
+                            && currentY >= Game.toAngle(heightLimit, wall)
             ) {
                 player.setTranslationY(dy);
             }
             stringBuilder.append(",").append(Screen.heightToAngle(player.getY()));
+            Log.wtf("stringBuilder: orjx,orjy", stringBuilder.toString() + ": " + player.getX() + "," + player.getY());
 
-            if(finalConnectedThread != null)
+            if (finalConnectedThread != null)
                 finalConnectedThread.sendMessage(stringBuilder.toString());
         });
 
         StreamController finalConnectedThread1 = connectedThread;
         binding.shoot.setOnClickListener(v -> {
-            if(finalConnectedThread1 != null) bulletPhysics.shoot(finalConnectedThread1);
+            if (finalConnectedThread1 != null) bulletPhysics.shoot(finalConnectedThread1);
             binding.shoot.setEnabled(false);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     Activity activity = getActivity();
-                    if(activity != null){
+                    if (activity != null) {
                         activity.runOnUiThread(() -> binding.shoot.setEnabled(true));
                     }
                 }
-            }, 1500);
+            }, 500);
         });
         //View view = inflater.inflate(R.layout.fragment_game_screen, container, false);
 

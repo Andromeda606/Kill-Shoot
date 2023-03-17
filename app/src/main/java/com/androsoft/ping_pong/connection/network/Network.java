@@ -15,11 +15,10 @@ public class Network implements ConnectionHelper {
 
     @Override
     public StreamController createConnectedThread() throws Exception {
-        Log.wtf("dd",Game.DEVICE_NAME);
         return new NetworkConnectedThread(
                 (Game.DEVICE_NAME.contains("S20 FE")) ?
                         "172.30.146.0" :
-                    "172.30.137.59"
+                    "172.30.163.106"
                 ,11000);
     }
 

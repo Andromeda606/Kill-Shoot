@@ -24,7 +24,6 @@ public class NetworkConnectedThread implements StreamController {
                 try {
                     DatagramPacket p = new DatagramPacket(data.getBytes(), data.length(), InetAddress.getByName(local), serverPort);
                     new DatagramSocket().send(p);
-                    Log.wtf("udp gönderildi","snaırım: " + local);
                 } catch (UnknownHostException e) {
                     Log.wtf("UnknownHostException",e.getMessage());
                     throw new RuntimeException(e);

@@ -3,7 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="#FF9800"
+             android:background="#00AEFF"
              android:gravity="center"
              tools:context=".GameScreen">
 
@@ -26,13 +26,17 @@
                 android:rotation="90"/>
 
         <ImageView
-                android:src="@drawable/ic_launcher_foreground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/player1" android:layout_gravity="center|left"/>
+                android:src="@drawable/ic_game_gunner1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/player1"
+                android:layout_gravity="center|left" android:rotation="90"/>
         <ImageView
-                android:src="@drawable/ic_launcher_foreground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/player2" android:layout_gravity="center|right"/>
+                android:src="@drawable/ic_game_gunner2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/player2"
+                android:layout_gravity="center|right" android:rotation="-90"/>
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
