@@ -25,14 +25,14 @@
                 android:layout_gravity="bottom|start"
                 android:rotation="90"/>
 
-        <ImageView
-                android:src="@drawable/ic_game_gunner1"
+        <com.androsoft.ping_pong.element.PlayerImage
+                android:src="@drawable/ic_game_character1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/player1"
                 android:layout_gravity="center|left" android:rotation="90"/>
-        <ImageView
-                android:src="@drawable/ic_game_gunner2"
+        <com.androsoft.ping_pong.element.PlayerImage
+                android:src="@drawable/ic_game_character2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/player2"

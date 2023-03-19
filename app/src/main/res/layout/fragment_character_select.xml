@@ -10,18 +10,77 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:background="#FF9800" android:gravity="center">
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editTextTextPersonName" android:gravity="center" android:hint="IP Adresi giriniz."/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:background="#FFC107">
-            <ImageView
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" app:srcCompat="@drawable/ic_launcher_foreground"
-                    android:id="@+id/imageView2" android:layout_weight="1"/>
-            <ImageView
+                    android:layout_height="match_parent" android:layout_weight="1">
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character1"
+                        android:layout_weight="1" android:layout_gravity="center"/>
+                <TextView
+                        android:text="GUNNER"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center" android:textSize="24sp"/>
+                <TextView
+                        android:text="Şerit halinde giden mermi gönderen ve ultisinde ise bir alana kalıcı lazer bırakan gemidir."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" app:srcCompat="@drawable/ic_launcher_foreground"
-                    android:id="@+id/imageView" android:layout_weight="1"/>
+                    android:layout_height="match_parent" android:layout_weight="1">
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character2"
+                        android:layout_weight="1" android:layout_gravity="center"/>
+                <TextView
+                        android:text="TRINGLER"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"  android:layout_weight="1"
+                        android:gravity="center" android:textSize="24sp"/>
+                <TextView
+                        android:text="Yavaş ama takip eden roket gönderen gemidir. Ultisinde ise 4 adet roket gönderir."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:layout_weight="1">
+                <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character3"
+                        android:layout_weight="1" android:layout_gravity="center"/>
+                <TextView
+                        android:text="CIRCLER"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center" android:textSize="24sp"/>
+                <TextView
+                        android:text="Yuvarlak mayınlar göndererek düşmanın gelmesi durumunda patlatır. Ultisi daha büyük bir mayın bırakır. Canı diğerlerine kıyasla daha fazladır."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:layout_weight="1"
+                        android:gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
+        <TextView
+                android:text="IP Adresiniz: "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/ipAddressText" android:gravity="center"/>
     </LinearLayout>
 </FrameLayout>

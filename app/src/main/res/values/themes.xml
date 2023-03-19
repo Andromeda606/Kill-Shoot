@@ -16,6 +16,7 @@
     <style name="Theme.PingPong.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
     <style name="Theme.PingPong.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.PingPong.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

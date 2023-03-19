@@ -2,23 +2,18 @@ package com.androsoft.ping_pong.physics;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.androsoft.ping_pong.GameScreen;
-import com.androsoft.ping_pong.R;
 import com.androsoft.ping_pong.connection.StreamController;
-import com.androsoft.ping_pong.constant.Bullet;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.element.BulletImage;
+import com.androsoft.ping_pong.element.PlayerImage;
+import com.androsoft.ping_pong.util.Device;
 import com.androsoft.ping_pong.util.Game;
 
 import java.util.ArrayList;
@@ -28,20 +23,64 @@ import java.util.TimerTask;
 public class BulletPhysics {
     public static ArrayList<BulletImage> xyPositions = new ArrayList<>();
     GameScreen gameScreen;
-    View rootLayout;
+    FrameLayout rootLayout;
     Player.Type playerType;
     Character.Type characterType;
 
-    public BulletPhysics(GameScreen gameScreen, Player.Type playerType, Character.Type characterType, View rootLayout) {
+    public BulletPhysics(GameScreen gameScreen, Player.Type playerType, Character.Type characterType, FrameLayout rootLayout) {
         this.gameScreen = gameScreen;
         this.rootLayout = rootLayout;
         this.playerType = playerType;
         this.characterType = characterType;
     }
 
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public FrameLayout getRootLayout() {
+        return rootLayout;
+    }
+
+    public void setRootLayout(FrameLayout rootLayout) {
+        this.rootLayout = rootLayout;
+    }
+
+    public Player.Type getPlayerType() {
+        return playerType;
+    }
+
+    public void setPlayerType(Player.Type playerType) {
+        this.playerType = playerType;
+    }
+
+    public Character.Type getCharacterType() {
+        return characterType;
+    }
+
+    public void setCharacterType(Character.Type characterType) {
+        this.characterType = characterType;
+    }
+
     public void shoot() {
-        //shootTring(2000, 1000);
-shootGunner(1000);
+        Character character = Character.convertTypeToCharacter(characterType);
+        switch (characterType){
+            case GUNNER:
+                shootGunner(character.getMovementSpeed());
+                break;
+            case TRINGLE:
+                shootTring(character.getMovementSpeed(),character.getSeperatorSpeed());
+                break;
+            case CIRCLER:
+                shootCircler(character.getMovementSpeed(), character.getSeperatorSpeed());
+                break;
+            default:
+                break;
+        }
 
         Log.wtf("SHOOT", "VİEW ADD YAPILDI");
     }
@@ -53,8 +92,9 @@ shootGunner(1000);
 
 
     private BulletImage createBullet() {
+        Character character = Character.convertTypeToCharacter(characterType);
         BulletImage bulletImage = new BulletImage(gameScreen.requireActivity());
-        bulletImage.setImageResource(R.drawable.ic_game_bullet1);
+        bulletImage.setImageResource(character.getBulletImage());
         bulletImage.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
         if (Player.Type.PLAYER2 == playerType)
             bulletImage.setRotation(180);
@@ -65,17 +105,25 @@ shootGunner(1000);
         float startY = (float) (player.getY() + (player.getHeight() / 4.0));
         bulletImage.setTranslationX(startX);
         bulletImage.setTranslationY(startY);
+        addScreen(bulletImage);
         return bulletImage;
+    }
+
+    private void addScreen(BulletImage bulletImage){
+        FrameLayout gameArea = getRootLayout();
+        gameScreen.requireActivity().runOnUiThread(() -> gameArea.addView(bulletImage));
+
+    }
+
+    private void removeScreen(BulletImage bulletImage){
+        FrameLayout gameArea = getRootLayout();
+        bulletImage.setStatus(false);
+        gameScreen.requireActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
     }
 
     protected void shootGunner(int speed) {
         FrameLayout gameArea = (FrameLayout) rootLayout;
         BulletImage bulletImage = createBullet();
-        gameArea.addView(bulletImage);
-
-        if (bulletImage.getParent() != null) {
-            ((ViewGroup) bulletImage.getParent()).removeView(bulletImage);
-        }
         gameArea.addView(bulletImage);
         int endX = Game.toEnd();
 
@@ -91,10 +139,7 @@ shootGunner(1000);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                gameScreen.requireActivity().runOnUiThread(() -> {
-                    bulletImage.setStatus(false);
-                    ((FrameLayout) rootLayout).removeView(bulletImage);
-                });
+                removeScreen(bulletImage);
             }
         }, speed);
     }
@@ -105,7 +150,6 @@ shootGunner(1000);
         final AnimatorSet[] animatior = {null}; // another final variable, java is trash
         BulletImage bullet = createBullet();
         ImageView enemyImage = gameScreen.playerToOtherImage(playerType);
-        ((FrameLayout) rootLayout).addView(bullet);
         times.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -117,7 +161,8 @@ shootGunner(1000);
                             animatior[0].cancel();
                             animatior[0].end();
                         }
-                        ((FrameLayout) rootLayout).removeView(bullet);
+                        removeScreen(bullet);
+                        bullet.setStatus(false);
                         return;
                     }
                     if (animatior[0] != null) {
@@ -126,30 +171,50 @@ shootGunner(1000);
                     }
                     ObjectAnimator animX = ObjectAnimator.ofFloat(bullet, "translationX", enemyImage.getX());
                     ObjectAnimator animY = ObjectAnimator.ofFloat(bullet, "translationY", enemyImage.getY());
+                    animX.setDuration(movementSpeed);
+                    double angle = Math.toDegrees(Math.atan2(bullet.getY() - enemyImage.getY(), bullet.getX() - enemyImage.getX()));
+                    Log.wtf("angle", String.valueOf(angle));
+                    ObjectAnimator animZ = ObjectAnimator.ofFloat(bullet, "rotation", (int) ( 180 - angle));
+                    animY.setDuration(movementSpeed);
+                    animZ.setDuration(200);
                     animatior[0] = new AnimatorSet();
-                    animatior[0].playTogether(animX, animY);
-                    animatior[0].setDuration(movementSpeed);
+                    animatior[0].playTogether(animX, animY, animZ);
                     animatior[0].start();
                 });
 
             }
         }, 0, seperatorSecond);
+        xyPositions.add(bullet);
+    }
 
-        times.schedule(new TimerTask() {
+
+    protected void shootCircler(int movementSpeed, int waitMs){
+        BulletImage bullet = createBullet();
+        float bulletLastLocation = bullet.getX();
+        if(playerType == Player.Type.PLAYER2){
+            bulletLastLocation -= (float) Device.getScreenWidth() / 2;
+        }else{
+            bulletLastLocation += (float) Device.getScreenWidth() / 2;
+        }
+        ObjectAnimator animation = ObjectAnimator.ofFloat(bullet, "translationX", bulletLastLocation);
+        animation.setDuration(movementSpeed);
+        animation.start();
+        xyPositions.add(bullet);
+        new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-
+                removeScreen(bullet);
             }
-        }, 10, 10);
+        }, waitMs + movementSpeed);
     }
 
     /**
      * Syncing all bullets <br>
      * Timer working 10 ms and collactions find
      */
-    public static void syncBullets(GameScreen gameScreen) {
-        ImageView enemyPlayer = gameScreen.getEnemyPlayer();
-        ImageView currentPlayer = gameScreen.getCurrentPlayer();
+    public static void syncBullets(GameScreen gameScreen, FrameLayout rootLayout) {
+        PlayerImage enemyPlayer = gameScreen.getEnemyPlayer();
+        PlayerImage currentPlayer = gameScreen.getCurrentPlayer();
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -163,18 +228,22 @@ shootGunner(1000);
                         BulletImage bulletImage = xyPositions.get(i);
                         if (!bulletImage.getStatus()) {
                             xyPositions.remove(i--);
+                            continue;
                         }
 
                         Rect bulletRect = new Rect();
                         bulletImage.getHitRect(bulletRect);
                         if (bulletImage.getPlayerType() == Player.Type.PLAYER1 && Rect.intersects(currentPlayerRect, bulletRect)) {
-                            // is enemy
-                            xyPositions.remove(i--);
-                            gameScreen.CURRENT_HEALTH -= 10;
-                        } else if (bulletImage.getPlayerType() == Player.Type.PLAYER2 && Rect.intersects(enemyPlayerRect, bulletRect)) {
                             // is player
                             xyPositions.remove(i--);
-                            gameScreen.ENEMY_HEALTH -= 10;
+                            rootLayout.removeView(bulletImage);
+                            currentPlayer.decraseHealth(10);
+                            Device.vibrate(gameScreen.requireContext(), 500);
+                        } else if (bulletImage.getPlayerType() == Player.Type.PLAYER2 && Rect.intersects(enemyPlayerRect, bulletRect)) {
+                            // is enemy
+                            xyPositions.remove(i--);
+                            rootLayout.removeView(bulletImage);
+                            enemyPlayer.decraseHealth(10);
                         }
                         gameScreen.updateHealths();
                     }

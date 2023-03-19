@@ -8,12 +8,18 @@
         <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_bullet1.xml" value="0.111" />
         <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_bullet2.xml" value="0.1" />
         <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_bullet3.xml" value="0.111" />
+        <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_character1.xml" value="0.111" />
+        <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_character2.xml" value="0.111" />
+        <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_character3.xml" value="0.111" />
+        <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_gunner1.xml" value="0.111" />
         <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_gunner2.xml" value="0.1" />
+        <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_game_gunner3.xml" value="0.111" />
         <entry key="../../Android/PingPong/app/src/main/res/drawable/ic_thin_target.xml" value="0.109" />
         <entry key="../../Android/PingPong/app/src/main/res/layout/activity_main.xml" value="0.17596740722656248" />
-        <entry key="../../Android/PingPong/app/src/main/res/layout/fragment_character_select.xml" value="0.1" />
+        <entry key="../../Android/PingPong/app/src/main/res/layout/fragment_character_select.xml" value="0.22996368408203127" />
         <entry key="../../Android/PingPong/app/src/main/res/layout/fragment_game_screen.xml" value="0.1857976653696498" />
         <entry key="../../Android/PingPong/app/src/main/res/layout/fragment_main_menu.xml" value="0.138604736328125" />
+        <entry key="../../Android/PingPong/app/src/main/res/menu/menu_main.xml" value="0.1140625" />
       </map>
     </option>
   </component>

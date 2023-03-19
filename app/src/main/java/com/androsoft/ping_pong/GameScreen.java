@@ -1,8 +1,6 @@
 package com.androsoft.ping_pong;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
+import com.androsoft.ping_pong.connection.OnMessageCaptured;
 import com.androsoft.ping_pong.connection.StreamController;
 import com.androsoft.ping_pong.connection.network.Network;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.databinding.FragmentGameScreenBinding;
+import com.androsoft.ping_pong.element.PlayerImage;
 import com.androsoft.ping_pong.physics.BulletPhysics;
 import com.androsoft.ping_pong.util.Device;
 import com.androsoft.ping_pong.util.Game;
@@ -25,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameScreen extends Fragment {
-    private BulletPhysics current, enemy;
     FragmentGameScreenBinding binding;
     public int ENEMY_HEALTH = 100;
     public int CURRENT_HEALTH = 100;
@@ -35,15 +34,15 @@ public class GameScreen extends Fragment {
         // Required empty public constructor
     }
 
-    public ImageView getCurrentPlayer() {
+    public PlayerImage getCurrentPlayer() {
         return playerToImage(PLAYER_TYPE);
     }
 
-    public ImageView getEnemyPlayer() {
+    public PlayerImage getEnemyPlayer() {
         return playerToOtherImage(PLAYER_TYPE);
     }
 
-    public ImageView playerToImage(Player.Type playerType) {
+    public PlayerImage playerToImage(Player.Type playerType) {
         if (Player.Type.PLAYER2 == playerType) {
             return binding.player2;
         } else {
@@ -51,7 +50,7 @@ public class GameScreen extends Fragment {
         }
     }
 
-    public ImageView playerToOtherImage(Player.Type playerType) {
+    public PlayerImage playerToOtherImage(Player.Type playerType) {
         if (Player.Type.PLAYER2 != playerType) {
             return binding.player2;
         } else {
@@ -60,62 +59,13 @@ public class GameScreen extends Fragment {
     }
 
     public void updateHealths() {
-        binding.enemyHealth.setText(String.valueOf(ENEMY_HEALTH));
-        binding.playerHealth.setText(String.valueOf(CURRENT_HEALTH));
+        binding.enemyHealth.setText(String.valueOf(getCurrentPlayer().getHealth()));
+        binding.playerHealth.setText(String.valueOf(getEnemyPlayer().getHealth()));
     }
 
-    // Required activity
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentGameScreenBinding.inflate(inflater);
-        Activity gameActivity = requireActivity();
-
-        Network network = new Network("17");
-        binding.textView3.setText(Device.getLocalIpAddress());
-        StreamController connectedThread;
-        //todo içeriye playerimage koyalım ve bu playerimage içerisinden shoot yapılsın.
-        current = new BulletPhysics(this, Player.Type.PLAYER2, Character.Type.GUNNER, binding.gameArea);
-        enemy = new BulletPhysics(this, Player.Type.PLAYER1, Character.Type.GUNNER, binding.gameArea);
-        try {
-            connectedThread = network.createConnectedThread();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        if (connectedThread != null) {
-            connectedThread.onMessageEvent(data -> {
-                Log.d("Data", data);
-                //todo bunu burada ayarlama, connectedthread içerisinde onXY ve onShoot kısmını ekle.
-                gameActivity.runOnUiThread(() -> {
-                    if (data.equals("SHOOT")) {
-                        enemy.shoot();
-                        return;
-                    }
-                    // find x,y
-                    String[] xy = data.split(",");
-                    if (xy.length != 2) {
-                        Log.wtf("LOGGER", "Data is wrong: " + data);
-                        return;
-                    }
-                    float x, y;
-                    x = Float.parseFloat(xy[0]);
-                    y = Float.parseFloat(xy[1]);
-                    ImageView enemy = getEnemyPlayer();
-                    enemy.setX(Screen.angleToWidth(x));
-                    enemy.setY(Device.getScreenHeight() - Screen.angleToHeight(y));
-                });
-
-            });
-        }
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 0, Game.toAngle(Device.getScreenWidth(), 10), 0);
-        layoutParams.gravity = Gravity.CENTER | Gravity.END;
-        binding.player2.setLayoutParams(layoutParams);
-        BulletPhysics.syncBullets(this);
-
-        StreamController finalConnectedThread = connectedThread;
+    private void initListeners(StreamController connectedThread) {
+        PlayerImage player = getCurrentPlayer();
         binding.joystick.setOnMoveListener((angle, strength) -> {
-            ImageView player = getCurrentPlayer();
             int width = player.getWidth();
 
             float dx = (float) Math.sin(Math.toRadians(angle)) * width;
@@ -141,23 +91,67 @@ public class GameScreen extends Fragment {
             ) {
                 player.setTranslationY(dy);
             }
-            stringBuilder.append(",").append(Screen.heightToAngle(player.getY()));
+            stringBuilder.append(":").append(Screen.heightToAngle(player.getY()));
 
-            if (finalConnectedThread != null)
-                finalConnectedThread.sendMessage(stringBuilder.toString());
+            if (connectedThread != null)
+                connectedThread.sendMessage(stringBuilder.toString());
         });
 
-        StreamController finalConnectedThread1 = connectedThread;
         binding.shoot.setOnClickListener(v -> {
-            if (finalConnectedThread1 != null) current.shoot(finalConnectedThread1);
+            if (connectedThread != null) getCurrentPlayer().shoot(connectedThread);
             binding.shoot.setEnabled(false);
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    gameActivity.runOnUiThread(() -> binding.shoot.setEnabled(true));
+                    requireActivity().runOnUiThread(() -> binding.shoot.setEnabled(true));
                 }
-            }, 500);
+            }, getCurrentPlayer().getCharacterInfo().getDuration());
         });
+    }
+
+    // Required activity
+    @Override
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentGameScreenBinding.inflate(inflater);
+        PlayerImage player = getCurrentPlayer();
+        PlayerImage enemyPlayer = getEnemyPlayer();
+        binding.textView3.setText(Device.getLocalIpAddress());
+        // Syncing all bullets
+        BulletPhysics.syncBullets(this, binding.gameArea);
+        updateHealths();
+
+        Network network = new Network("17");
+        StreamController connectedThread;
+        try {
+            connectedThread = network.createConnectedThread();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (connectedThread != null) {
+            connectedThread.onMessageEvent(new OnMessageCaptured() {
+                @Override
+                public void shoot() {
+                    getEnemyPlayer().shoot();
+                }
+
+                @Override
+                public void xyStatus(float x, float y) {
+                    ImageView enemy = getEnemyPlayer();
+                    enemy.setX(Screen.angleToWidth(x));
+                    enemy.setY(Device.getScreenHeight() - Screen.angleToHeight(y));
+                }
+            });
+        }
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(Screen.pxToDp(requireContext(), 50), Screen.pxToDp(requireContext(), 50));
+        layoutParams.setMargins(0, 0, Game.toAngle(Device.getScreenWidth(), 10), 0);
+        layoutParams.gravity = Gravity.CENTER | Gravity.END;
+        binding.player2.setLayoutParams(layoutParams);
+
+        player.setBulletPhysics(new BulletPhysics(this, Player.Type.PLAYER2, Character.Type.CIRCLER, binding.gameArea));
+        enemyPlayer.setBulletPhysics(new BulletPhysics(this, Player.Type.PLAYER1, Character.Type.TRINGLE, binding.gameArea));
+
+        initListeners(connectedThread);
 
         return binding.getRoot();
     }

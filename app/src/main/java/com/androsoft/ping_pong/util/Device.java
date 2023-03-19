@@ -1,33 +1,20 @@
 package com.androsoft.ping_pong.util;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Insets;
-import android.graphics.Rect;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.provider.Settings;
-import android.text.format.Formatter;
-import android.util.DisplayMetrics;
-import android.view.WindowInsets;
-import android.view.WindowManager;
-import android.view.WindowMetrics;
-import androidx.annotation.RequiresApi;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.Enumeration;
 
 public class Device {
     public static String getDeviceName() {
-        return Build.DEVICE;
+        return Build.MODEL;
     }
 
     public static int getScreenWidth(){
@@ -54,5 +41,15 @@ public class Device {
         }
 
         return null;
+    }
+
+    public static void vibrate(Context context, int ms){
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(ms, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(ms);
+        }
     }
 }

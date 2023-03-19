@@ -35,8 +35,8 @@ public class NetworkConnectedThread implements StreamController {
             }
         }.start();
     }
+    //todo shoot ve xy kordinatlarını göndermeyi ayarla.
 
-    @Override
     public void onMessageEvent(OnMessageCaptured onMessageCaptured) {
         new Thread(){
             @Override
@@ -51,21 +51,33 @@ public class NetworkConnectedThread implements StreamController {
                     while (true) {
 
                         dsocket.receive(packet);
-                        String lText = new String(buffer, 0, packet.getLength());
-                        //data.setText(lText);
-
-                        onMessageCaptured.capture(lText);
-
+                        String data = new String(buffer, 0, packet.getLength());
                         packet.setLength(buffer.length);
+                        if(data.equals("SHOOT")){
+                            onMessageCaptured.shoot();
+                            continue;
+                        }
+                        String[] xy = data.split(":");
+                        onMessageCaptured.xyStatus(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
                     }
                 } catch (Exception e) {
                     Log.wtf("UDP ALINIRKEN HATA", e.getMessage());
 
                     e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
-                super.run();
             }
         }.start();
 
+    }
+
+    @Override
+    public void sendLocation(int x, int y) {
+        sendMessage(x + ":" + y);
+    }
+
+    @Override
+    public void shoot() {
+        sendMessage("SHOOT");
     }
 }
