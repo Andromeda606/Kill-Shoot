@@ -7,6 +7,8 @@ public class Character {
     private int characterImage, bulletImage;
     private int health, damage;
     private int duration;
+
+    private int title, description;
     public enum Type{
         GUNNER,
         TRINGLE,
@@ -19,6 +21,7 @@ public class Character {
         int bulletImage, characterImage;
         int health, damage;
         int duration;
+        int title, description;
         switch (type){
             case GUNNER:
                 movementSpeed = 1000;
@@ -28,6 +31,8 @@ public class Character {
                 health = 100;
                 damage = 10;
                 duration = 250;
+                title = R.string.game_character_1_title;
+                description = R.string.game_character_1_description;
                 break;
             case TRINGLE:
                 movementSpeed = 1500;
@@ -37,6 +42,8 @@ public class Character {
                 health = 80;
                 damage = 5;
                 duration = 900;
+                title = R.string.game_character_2_title;
+                description = R.string.game_character_2_description;
                 break;
             case CIRCLER:
                 movementSpeed = 3000;
@@ -46,6 +53,8 @@ public class Character {
                 health = 150;
                 damage = 20;
                 duration = 700;
+                title = R.string.game_character_3_title;
+                description = R.string.game_character_3_description;
                 break;
             default:
                 movementSpeed = 2000;
@@ -55,6 +64,8 @@ public class Character {
                 health = 100;
                 damage = 5;
                 duration = 9999;
+                title = R.string.game_character_1_title;
+                description = R.string.game_character_1_description;
                 break;
         }
         character.setMovementSpeed(movementSpeed);
@@ -64,6 +75,8 @@ public class Character {
         character.setHealth(health);
         character.setDamage(damage);
         character.setDuration(duration);
+        character.setTitle(title);
+        character.setDescription(description);
         return character;
     }
 
@@ -121,5 +134,21 @@ public class Character {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getTitle() {
+        return title;
+    }
+
+    public void setTitle(int title) {
+        this.title = title;
+    }
+
+    public int getDescription() {
+        return description;
+    }
+
+    public void setDescription(int description) {
+        this.description = description;
     }
 }

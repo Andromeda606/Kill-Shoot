@@ -11,8 +11,8 @@ import com.androsoft.ping_pong.GameScreen;
 import com.androsoft.ping_pong.connection.StreamController;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
-import com.androsoft.ping_pong.element.BulletImage;
-import com.androsoft.ping_pong.element.PlayerImage;
+import com.androsoft.ping_pong.view.BulletImage;
+import com.androsoft.ping_pong.view.PlayerImage;
 import com.androsoft.ping_pong.util.Device;
 import com.androsoft.ping_pong.util.Game;
 

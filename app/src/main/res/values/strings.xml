@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Ping-Pong</string>
     <string name="local_ip_address">Your IP Address: %s</string>
-    <string name="game_character_1_title">Your IP Address: %s</string>
-    <string name="game_character_1_description">Your IP Address: %s</string>
-    <string name="game_character_2_title">Your IP Address: %s</string>
-    <string name="game_character_2_description">Your IP Address: %s</string>
-    <string name="game_character_3_title">Your IP Address: %s</string>
-    <string name="game_character_3_description">Your IP Address: %s</string>
+    <string name="game_character_1_title">GUNNER</string>
+    <string name="game_character_1_description">It is the ship that sends bullets going in a strip and leaves a permanent laser in an area in its ult.</string>
+    <string name="game_character_2_title">TRINGLER</string>
+    <string name="game_character_2_description">Slow but following is the ship that sends the rocket. In his ultimate, he sends 4 rockets.</string>
+    <string name="game_character_3_title">CIRCLER</string>
+    <string name="game_character_3_description">It sends round mines and detonates when the enemy arrives. His ultimate drops a larger mine. He has more life than others.</string>
 </resources>

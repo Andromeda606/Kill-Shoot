@@ -1,4 +1,4 @@
-package com.androsoft.ping_pong.element;
+package com.androsoft.ping_pong.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

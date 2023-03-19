@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-             tools:context=".fragment.CharacterSelectFragment">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent" android:layout_height="match_parent"
+             tools:context=".fragment.characterselect.CharacterSelectFragment">
 
 
     <LinearLayout
@@ -15,18 +15,29 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/editTextTextPersonName" android:gravity="center" android:hint="IP Adresi giriniz."/>
-        <LinearLayout
+                android:id="@+id/editTextTextPersonName" android:gravity="center" android:hint="IP Adresi giriniz."
+                android:textSize="20sp"/>
+        <TextView
+                android:text="IP Adresiniz: "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/ipAddressText" android:gravity="center"
+                android:textSize="16sp"/>
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/characterList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <!--<LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:background="#FFC107">
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1">
+                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
                 <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character1"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" app:srcCompat="@drawable/ic_game_character1"
                         android:layout_weight="1" android:layout_gravity="center"/>
                 <TextView
                         android:text="GUNNER"
@@ -42,15 +53,15 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1">
+                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
                 <ImageView
-                        android:layout_width="100dp"
+                        android:layout_width="85dp"
                         android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character2"
                         android:layout_weight="1" android:layout_gravity="center"/>
                 <TextView
                         android:text="TRINGLER"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"  android:layout_weight="1"
+                        android:layout_height="wrap_content" android:layout_weight="1"
                         android:gravity="center" android:textSize="24sp"/>
                 <TextView
                         android:text="Yavaş ama takip eden roket gönderen gemidir. Ultisinde ise 4 adet roket gönderir."
@@ -61,10 +72,10 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1">
+                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
                 <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character3"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" app:srcCompat="@drawable/ic_game_character3"
                         android:layout_weight="1" android:layout_gravity="center"/>
                 <TextView
                         android:text="CIRCLER"
@@ -77,10 +88,6 @@
                         android:layout_height="wrap_content" android:layout_weight="1"
                         android:gravity="center"/>
             </LinearLayout>
-        </LinearLayout>
-        <TextView
-                android:text="IP Adresiniz: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/ipAddressText" android:gravity="center"/>
+        </LinearLayout>-->
     </LinearLayout>
 </FrameLayout>

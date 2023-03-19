@@ -3,23 +3,19 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/action_FirstFragment_to_SecondFragment">
+                app:startDestination="@id/FirstFragment">
 
     <fragment
             android:id="@+id/FirstFragment"
-            android:name="com.androsoft.ping_pong.fragment.CharacterSelectFragment"
+            android:name="com.androsoft.ping_pong.fragment.characterselect.CharacterSelectFragment"
             tools:layout="@layout/fragment_character_select">
         <action android:id="@+id/action_FirstFragment_to_action_FirstFragment_to_SecondFragment"
-                app:destination="@id/action_FirstFragment_to_SecondFragment"/>
+                app:destination="@id/gameScreenNavigate"/>
     </fragment>
 
     <fragment
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/gameScreenNavigate"
             android:name="com.androsoft.ping_pong.GameScreen"
             tools:layout="@layout/fragment_game_screen">
-
-        <action
-                android:id="@+id/action_FirstFragment_to_SecondFragment"
-        />
     </fragment>
 </navigation>

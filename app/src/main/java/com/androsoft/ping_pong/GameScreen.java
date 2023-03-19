@@ -14,7 +14,7 @@ import com.androsoft.ping_pong.connection.network.Network;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.databinding.FragmentGameScreenBinding;
-import com.androsoft.ping_pong.element.PlayerImage;
+import com.androsoft.ping_pong.view.PlayerImage;
 import com.androsoft.ping_pong.physics.BulletPhysics;
 import com.androsoft.ping_pong.util.Device;
 import com.androsoft.ping_pong.util.Game;
@@ -26,8 +26,6 @@ import java.util.TimerTask;
 
 public class GameScreen extends Fragment {
     FragmentGameScreenBinding binding;
-    public int ENEMY_HEALTH = 100;
-    public int CURRENT_HEALTH = 100;
     public Player.Type PLAYER_TYPE = Player.Type.PLAYER2;
 
     public GameScreen() {

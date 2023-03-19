@@ -1,8 +1,7 @@
-package com.androsoft.ping_pong.element;
+package com.androsoft.ping_pong.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
