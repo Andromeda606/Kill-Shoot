@@ -15,7 +15,7 @@
             app:navGraph="@navigation/nav_graph"
             app:defaultNavHost="true"/>
     <!--<fragment
-            android:name="com.androsoft.ping_pong.GameScreen"
+            android:name="com.androsoft.ping_pong.fragment.GameScreenFragment"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:tag="tag_cardview_fragment" />-->

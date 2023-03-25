@@ -1,8 +1,8 @@
 package com.androsoft.ping_pong.util;
 
-public class Game {
+public class GameUtil {
     public static int toEnd() {
-        return Device.getScreenWidth();
+        return DeviceUtil.getScreenWidth();
     }
     public static int toStart() {
         return 0;

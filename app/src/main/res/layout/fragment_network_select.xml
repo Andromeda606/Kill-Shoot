@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".fragment.NetworkSelectFragment" android:orientation="vertical" android:gravity="center">
+
+
+    <TextView
+            android:text="@string/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/textView4" android:gravity="center"/>
+    <TextView
+            android:text="Devam etmek için düşmanın IP Adresini giriniz."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center"/>
+    <TextView
+            android:text="Senin IP adresin: 192.168.0.0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/textView6" android:gravity="center"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/ipAddressText" android:gravity="center"/>
+    <Button
+            android:text="Devam Et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/button"/>
+</LinearLayout>

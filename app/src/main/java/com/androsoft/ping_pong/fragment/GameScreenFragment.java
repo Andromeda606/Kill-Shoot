@@ -1,34 +1,33 @@
-package com.androsoft.ping_pong;
+package com.androsoft.ping_pong.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
-import com.androsoft.ping_pong.connection.OnMessageCaptured;
+import com.androsoft.ping_pong.connection.OnGameProcess;
 import com.androsoft.ping_pong.connection.StreamController;
 import com.androsoft.ping_pong.connection.network.Network;
+import com.androsoft.ping_pong.connection.network.NetworkConnectedThread;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.databinding.FragmentGameScreenBinding;
 import com.androsoft.ping_pong.view.PlayerImage;
 import com.androsoft.ping_pong.physics.BulletPhysics;
-import com.androsoft.ping_pong.util.Device;
-import com.androsoft.ping_pong.util.Game;
-import com.androsoft.ping_pong.util.Screen;
+import com.androsoft.ping_pong.util.DeviceUtil;
+import com.androsoft.ping_pong.util.GameUtil;
+import com.androsoft.ping_pong.util.ScreenUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameScreen extends Fragment {
+public class GameScreenFragment extends Fragment {
     FragmentGameScreenBinding binding;
     public Player.Type PLAYER_TYPE = Player.Type.PLAYER2;
 
-    public GameScreen() {
+    public GameScreenFragment() {
         // Required empty public constructor
     }
 
@@ -69,30 +68,35 @@ public class GameScreen extends Fragment {
             float dx = (float) Math.sin(Math.toRadians(angle)) * width;
             float dy = (float) Math.cos(Math.toRadians(angle)) * player.getHeight();
 
-            dx = player.getTranslationX() + dx * strength / 250;
-            dy = player.getTranslationY() + dy * strength / 250;
+            dx = player.getTranslationX() + dx * strength / 150;
+            dy = player.getTranslationY() + dy * strength / 150;
 
             float currentX = player.getX() + dx;
             float currentY = player.getY() + dy;
             int wall = 10;
-            StringBuilder stringBuilder = new StringBuilder();
             if (
-                    currentX <= Device.getScreenWidth() - Game.toAngle(Device.getScreenWidth(), 5)
-                            && currentX >= Game.toAngle(Device.getScreenWidth(), wall)
+                    currentX <= DeviceUtil.getScreenWidth() - GameUtil.toAngle(DeviceUtil.getScreenWidth(), 5)
+                            && currentX >= GameUtil.toAngle(DeviceUtil.getScreenWidth(), wall)
             ) {
                 player.setTranslationX(dx);
             }
-            stringBuilder.append(Screen.widthToAngle(player.getX()));
             if (
-                    currentY <= Device.getScreenHeight() - Game.toAngle(Device.getScreenHeight(), wall)
-                            && currentY >= Game.toAngle(Device.getScreenHeight(), wall)
+                    currentY <= DeviceUtil.getScreenHeight() - GameUtil.toAngle(DeviceUtil.getScreenHeight(), wall)
+                            && currentY >= GameUtil.toAngle(DeviceUtil.getScreenHeight(), wall)
             ) {
                 player.setTranslationY(dy);
             }
-            stringBuilder.append(":").append(Screen.heightToAngle(player.getY()));
 
             if (connectedThread != null)
-                connectedThread.sendMessage(stringBuilder.toString());
+                connectedThread.sendLocation(ScreenUtil.widthToAngle(player.getX()), ScreenUtil.heightToAngle(player.getY()));
+        });
+
+        binding.joystickLayout.setOnTouchListener((v, event) -> {
+            //todo not working properly
+            binding.joystick.setVisibility(View.VISIBLE);
+            binding.joystick.setTranslationX(v.getX());
+            binding.joystick.setTranslationY(v.getY());
+            return false;
         });
 
         binding.shoot.setOnClickListener(v -> {
@@ -114,42 +118,54 @@ public class GameScreen extends Fragment {
         binding = FragmentGameScreenBinding.inflate(inflater);
         PlayerImage player = getCurrentPlayer();
         PlayerImage enemyPlayer = getEnemyPlayer();
-        binding.textView3.setText(Device.getLocalIpAddress());
+        binding.textView3.setText(DeviceUtil.getLocalIpAddress());
         // Syncing all bullets
         BulletPhysics.syncBullets(this, binding.gameArea);
         updateHealths();
+        Bundle datas = getArguments();
 
-        Network network = new Network("17");
+        Network network = new Network(datas.getString("ipAddress"));
         StreamController connectedThread;
         try {
             connectedThread = network.createConnectedThread();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            new AlertDialog.Builder(this.getContext())
+                    .setMessage("Karşı oyuncuya bağlanılamadı!")
+                    .setTitle("HATA")
+                    .setPositiveButton("Çık", null)
+                    .create()
+                    .show();
+            return binding.getRoot();
         }
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ScreenUtil.pxToDp(requireContext(), 50), ScreenUtil.pxToDp(requireContext(), 50));
+        layoutParams.setMargins(0, 0, GameUtil.toAngle(DeviceUtil.getScreenWidth(), 10), 0);
+        layoutParams.gravity = Gravity.CENTER | Gravity.END;
+        binding.player2.setLayoutParams(layoutParams);
+        int type = (int) datas.get("characterType");
+        Character.Type playerType = Character.intToCharacter(type);
+        int enemy = (int) datas.get("enemyType");
+        Character.Type enemyType = Character.intToCharacter(enemy);
+        player.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER2, playerType, binding.gameArea));
+        enemyPlayer.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER1, enemyType, binding.gameArea));
+
+        initListeners(connectedThread);
         if (connectedThread != null) {
-            connectedThread.onMessageEvent(new OnMessageCaptured() {
+            NetworkConnectedThread.setOnGameProcess(new OnGameProcess() {
                 @Override
                 public void shoot() {
                     getEnemyPlayer().shoot();
                 }
 
+
                 @Override
                 public void xyStatus(float x, float y) {
                     ImageView enemy = getEnemyPlayer();
-                    enemy.setX(Screen.angleToWidth(x));
-                    enemy.setY(Device.getScreenHeight() - Screen.angleToHeight(y));
+                    enemy.setX(ScreenUtil.angleToWidth(x));
+                    enemy.setY(DeviceUtil.getScreenHeight() - ScreenUtil.angleToHeight(y));
                 }
             });
         }
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(Screen.pxToDp(requireContext(), 50), Screen.pxToDp(requireContext(), 50));
-        layoutParams.setMargins(0, 0, Game.toAngle(Device.getScreenWidth(), 10), 0);
-        layoutParams.gravity = Gravity.CENTER | Gravity.END;
-        binding.player2.setLayoutParams(layoutParams);
 
-        player.setBulletPhysics(new BulletPhysics(this, Player.Type.PLAYER2, Character.Type.CIRCLER, binding.gameArea));
-        enemyPlayer.setBulletPhysics(new BulletPhysics(this, Player.Type.PLAYER1, Character.Type.TRINGLE, binding.gameArea));
-
-        initListeners(connectedThread);
 
         return binding.getRoot();
     }

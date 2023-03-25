@@ -80,6 +80,17 @@ public class Character {
         return character;
     }
 
+    public static Character.Type intToCharacter(int characterType){
+        switch (characterType){
+            case 2:
+                return Type.CIRCLER;
+            case 1:
+                return Type.TRINGLE;
+            default:
+                return Type.GUNNER;
+        }
+    }
+
     public int getMovementSpeed() {
         return movementSpeed;
     }

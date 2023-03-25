@@ -1,8 +1,8 @@
 package com.androsoft.ping_pong.connection.network;
 
 import android.util.Log;
-import com.androsoft.ping_pong.connection.OnMessageCaptured;
-import com.androsoft.ping_pong.connection.StreamController;
+import com.androsoft.ping_pong.connection.*;
+import com.androsoft.ping_pong.constant.Character;
 
 import java.io.IOException;
 import java.net.*;
@@ -37,7 +37,8 @@ public class NetworkConnectedThread implements StreamController {
     }
     //todo shoot ve xy kordinatlarını göndermeyi ayarla.
 
-    public void onMessageEvent(OnMessageCaptured onMessageCaptured) {
+
+    public static void setOnMessageEvent(OnMessageEvent onMessageEvent) {
         new Thread(){
             @Override
             public void run() {
@@ -49,17 +50,14 @@ public class NetworkConnectedThread implements StreamController {
                     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
                     while (true) {
-
                         dsocket.receive(packet);
                         String data = new String(buffer, 0, packet.getLength());
+                        Log.wtf("data", data);
                         packet.setLength(buffer.length);
-                        if(data.equals("SHOOT")){
-                            onMessageCaptured.shoot();
-                            continue;
-                        }
-                        String[] xy = data.split(":");
-                        onMessageCaptured.xyStatus(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
+                        onMessageEvent.message(data, packet.getAddress().getHostAddress());
                     }
+                } catch (EndConnection ignored){
+                    Log.wtf("Uyarı","Bağlantı izlemesi kapatıldı.");
                 } catch (Exception e) {
                     Log.wtf("UDP ALINIRKEN HATA", e.getMessage());
 
@@ -71,8 +69,50 @@ public class NetworkConnectedThread implements StreamController {
 
     }
 
+    public static void setOnGameProcess(OnGameProcess onGameProcess){
+        setOnMessageEvent((data, ipAddress) -> {
+            if(data.equals("SHOOT")){
+                onGameProcess.shoot();
+                return;
+            } else if (data.contains(":")) {
+                String[] xy = data.split(":");
+                onGameProcess.xyStatus(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
+                return;
+            }
+            Log.wtf("Bilinmeyen data", data);
+            throw new EndConnection();
+        });
+    }
+
+    public static void setOnBattleInit(OnBattleInit onBattleInit){
+        setOnMessageEvent((data, ipAddress) -> {
+            switch (data) {
+                case "find":
+                    onBattleInit.onRequest(ipAddress);
+                    return;
+                case "accept":
+                    onBattleInit.catchProcess(ipAddress, true);
+                    return;
+                case "reject":
+                    onBattleInit.catchProcess(ipAddress, false);
+                    return;
+            }
+            throw new EndConnection();
+        });
+    }
+
     @Override
-    public void sendLocation(int x, int y) {
+    public void findDevice() {
+        sendMessage("find");
+    }
+
+    @Override
+    public void sendAcceptRequest(int characterType) {
+        sendMessage("accept: " + characterType);
+    }
+
+    @Override
+    public void sendLocation(float x, float y) {
         sendMessage(x + ":" + y);
     }
 

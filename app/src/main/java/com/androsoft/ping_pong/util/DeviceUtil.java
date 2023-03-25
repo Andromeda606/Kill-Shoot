@@ -12,7 +12,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-public class Device {
+public class DeviceUtil {
     public static String getDeviceName() {
         return Build.MODEL;
     }

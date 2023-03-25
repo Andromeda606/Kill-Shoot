@@ -10,18 +10,26 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:background="#FF9800" android:gravity="center">
+        <TextView
+                android:text="Düşman 192.168.0.0 için sasvaşmaya hazırlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView7" android:gravity="center"/>
+        <TextView
+                android:text="Düşman Şuanda Karakter Seçiyor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView8" android:gravity="center"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/editTextTextPersonName" android:gravity="center" android:hint="IP Adresi giriniz."
-                android:textSize="20sp"/>
+                android:textSize="20sp" android:visibility="gone"/>
         <TextView
                 android:text="IP Adresiniz: "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/ipAddressText" android:gravity="center"
-                android:textSize="16sp"/>
+                android:textSize="16sp" android:visibility="gone"/>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/characterList"
                 android:layout_width="match_parent"

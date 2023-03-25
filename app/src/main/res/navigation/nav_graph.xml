@@ -3,19 +3,25 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-                app:startDestination="@id/FirstFragment">
-
+                app:startDestination="@id/NetworkSelectFragment">
     <fragment
-            android:id="@+id/FirstFragment"
-            android:name="com.androsoft.ping_pong.fragment.characterselect.CharacterSelectFragment"
-            tools:layout="@layout/fragment_character_select">
-        <action android:id="@+id/action_FirstFragment_to_action_FirstFragment_to_SecondFragment"
-                app:destination="@id/gameScreenNavigate"/>
+            android:id="@+id/NetworkSelectFragment"
+            android:name="com.androsoft.ping_pong.fragment.NetworkSelectFragment"
+            tools:layout="@layout/fragment_network_select">
+        <action android:id="@+id/action_NetworkSelectFragment_to_CharacterSelectFragment" app:destination="@id/CharacterSelectFragment"/>
     </fragment>
 
     <fragment
-            android:id="@+id/gameScreenNavigate"
-            android:name="com.androsoft.ping_pong.GameScreen"
+            android:id="@+id/CharacterSelectFragment"
+            android:name="com.androsoft.ping_pong.fragment.characterselect.CharacterSelectFragment"
+            tools:layout="@layout/fragment_character_select">
+        <action android:id="@+id/action_CharacterSelectFragment_to_GameFragment"
+                app:destination="@id/GameFragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/GameFragment"
+            android:name="com.androsoft.ping_pong.fragment.GameScreenFragment"
             tools:layout="@layout/fragment_game_screen">
     </fragment>
 </navigation>

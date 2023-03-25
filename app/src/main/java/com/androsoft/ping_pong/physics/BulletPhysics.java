@@ -7,14 +7,14 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.androsoft.ping_pong.GameScreen;
+import com.androsoft.ping_pong.fragment.GameScreenFragment;
 import com.androsoft.ping_pong.connection.StreamController;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.view.BulletImage;
 import com.androsoft.ping_pong.view.PlayerImage;
-import com.androsoft.ping_pong.util.Device;
-import com.androsoft.ping_pong.util.Game;
+import com.androsoft.ping_pong.util.DeviceUtil;
+import com.androsoft.ping_pong.util.GameUtil;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -22,24 +22,24 @@ import java.util.TimerTask;
 
 public class BulletPhysics {
     public static ArrayList<BulletImage> xyPositions = new ArrayList<>();
-    GameScreen gameScreen;
+    GameScreenFragment gameScreenFragment;
     FrameLayout rootLayout;
     Player.Type playerType;
     Character.Type characterType;
 
-    public BulletPhysics(GameScreen gameScreen, Player.Type playerType, Character.Type characterType, FrameLayout rootLayout) {
-        this.gameScreen = gameScreen;
+    public BulletPhysics(GameScreenFragment gameScreenFragment, Player.Type playerType, Character.Type characterType, FrameLayout rootLayout) {
+        this.gameScreenFragment = gameScreenFragment;
         this.rootLayout = rootLayout;
         this.playerType = playerType;
         this.characterType = characterType;
     }
 
-    public GameScreen getGameScreen() {
-        return gameScreen;
+    public GameScreenFragment getGameScreen() {
+        return gameScreenFragment;
     }
 
-    public void setGameScreen(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public void setGameScreen(GameScreenFragment gameScreenFragment) {
+        this.gameScreenFragment = gameScreenFragment;
     }
 
     public FrameLayout getRootLayout() {
@@ -68,12 +68,12 @@ public class BulletPhysics {
 
     public void shoot() {
         Character character = Character.convertTypeToCharacter(characterType);
-        switch (characterType){
+        switch (characterType) {
             case GUNNER:
                 shootGunner(character.getMovementSpeed());
                 break;
             case TRINGLE:
-                shootTring(character.getMovementSpeed(),character.getSeperatorSpeed());
+                shootTring(character.getMovementSpeed(), character.getSeperatorSpeed());
                 break;
             case CIRCLER:
                 shootCircler(character.getMovementSpeed(), character.getSeperatorSpeed());
@@ -93,14 +93,14 @@ public class BulletPhysics {
 
     private BulletImage createBullet() {
         Character character = Character.convertTypeToCharacter(characterType);
-        BulletImage bulletImage = new BulletImage(gameScreen.requireActivity());
+        BulletImage bulletImage = new BulletImage(gameScreenFragment.requireActivity());
         bulletImage.setImageResource(character.getBulletImage());
         bulletImage.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
         if (Player.Type.PLAYER2 == playerType)
             bulletImage.setRotation(180);
         bulletImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         bulletImage.setPlayerType(playerType);
-        ImageView player = gameScreen.playerToImage(playerType);
+        ImageView player = gameScreenFragment.playerToImage(playerType);
         float startX = (float) (player.getX() + player.getWidth() / 4.0);
         float startY = (float) (player.getY() + (player.getHeight() / 4.0));
         bulletImage.setTranslationX(startX);
@@ -109,31 +109,32 @@ public class BulletPhysics {
         return bulletImage;
     }
 
-    private void addScreen(BulletImage bulletImage){
+    private void addScreen(BulletImage bulletImage) {
         FrameLayout gameArea = getRootLayout();
-        gameScreen.requireActivity().runOnUiThread(() -> gameArea.addView(bulletImage));
+        if (bulletImage.getParent() != null) {
+            removeScreen(bulletImage);
+        }
+        gameScreenFragment.requireActivity().runOnUiThread(() -> gameArea.addView(bulletImage));
 
     }
 
-    private void removeScreen(BulletImage bulletImage){
+    private void removeScreen(BulletImage bulletImage) {
         FrameLayout gameArea = getRootLayout();
         bulletImage.setStatus(false);
-        gameScreen.requireActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
+        gameScreenFragment.requireActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
     }
 
     protected void shootGunner(int speed) {
-        FrameLayout gameArea = (FrameLayout) rootLayout;
         BulletImage bulletImage = createBullet();
-        gameArea.addView(bulletImage);
-        int endX = Game.toEnd();
+        int endX = GameUtil.toEnd();
 
         if (playerType == Player.Type.PLAYER2) {
-            endX = Game.toStart();
+            endX = GameUtil.toStart();
         }
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(bulletImage, "translationX", endX);
         animation.setDuration(speed);
-        animation.start();
+        gameScreenFragment.requireActivity().runOnUiThread(animation::start);
         xyPositions.add(bulletImage);
 
         new Timer().schedule(new TimerTask() {
@@ -149,11 +150,11 @@ public class BulletPhysics {
         final int[] timeCount = {0}; // final variable, java is trash
         final AnimatorSet[] animatior = {null}; // another final variable, java is trash
         BulletImage bullet = createBullet();
-        ImageView enemyImage = gameScreen.playerToOtherImage(playerType);
+        ImageView enemyImage = gameScreenFragment.playerToOtherImage(playerType);
         times.schedule(new TimerTask() {
             @Override
             public void run() {
-                gameScreen.requireActivity().runOnUiThread(() -> {
+                gameScreenFragment.requireActivity().runOnUiThread(() -> {
                     if (timeCount[0]++ == 3) {
                         times.purge();
                         times.cancel();
@@ -174,7 +175,7 @@ public class BulletPhysics {
                     animX.setDuration(movementSpeed);
                     double angle = Math.toDegrees(Math.atan2(bullet.getY() - enemyImage.getY(), bullet.getX() - enemyImage.getX()));
                     Log.wtf("angle", String.valueOf(angle));
-                    ObjectAnimator animZ = ObjectAnimator.ofFloat(bullet, "rotation", (int) ( 180 - angle));
+                    ObjectAnimator animZ = ObjectAnimator.ofFloat(bullet, "rotation", (int) (180 - angle));
                     animY.setDuration(movementSpeed);
                     animZ.setDuration(200);
                     animatior[0] = new AnimatorSet();
@@ -188,13 +189,13 @@ public class BulletPhysics {
     }
 
 
-    protected void shootCircler(int movementSpeed, int waitMs){
+    protected void shootCircler(int movementSpeed, int waitMs) {
         BulletImage bullet = createBullet();
         float bulletLastLocation = bullet.getX();
-        if(playerType == Player.Type.PLAYER2){
-            bulletLastLocation -= (float) Device.getScreenWidth() / 2;
-        }else{
-            bulletLastLocation += (float) Device.getScreenWidth() / 2;
+        if (playerType == Player.Type.PLAYER2) {
+            bulletLastLocation -= (float) DeviceUtil.getScreenWidth() / 2;
+        } else {
+            bulletLastLocation += (float) DeviceUtil.getScreenWidth() / 2;
         }
         ObjectAnimator animation = ObjectAnimator.ofFloat(bullet, "translationX", bulletLastLocation);
         animation.setDuration(movementSpeed);
@@ -212,13 +213,13 @@ public class BulletPhysics {
      * Syncing all bullets <br>
      * Timer working 10 ms and collactions find
      */
-    public static void syncBullets(GameScreen gameScreen, FrameLayout rootLayout) {
-        PlayerImage enemyPlayer = gameScreen.getEnemyPlayer();
-        PlayerImage currentPlayer = gameScreen.getCurrentPlayer();
+    public static void syncBullets(GameScreenFragment gameScreenFragment, FrameLayout rootLayout) {
+        PlayerImage enemyPlayer = gameScreenFragment.getEnemyPlayer();
+        PlayerImage currentPlayer = gameScreenFragment.getCurrentPlayer();
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                gameScreen.requireActivity().runOnUiThread(() -> {
+                gameScreenFragment.requireActivity().runOnUiThread(() -> {
                     Rect enemyPlayerRect = new Rect();
                     Rect currentPlayerRect = new Rect();
                     enemyPlayer.getHitRect(enemyPlayerRect);
@@ -238,14 +239,14 @@ public class BulletPhysics {
                             xyPositions.remove(i--);
                             rootLayout.removeView(bulletImage);
                             currentPlayer.decraseHealth(10);
-                            Device.vibrate(gameScreen.requireContext(), 500);
+                            DeviceUtil.vibrate(gameScreenFragment.requireContext(), 500);
                         } else if (bulletImage.getPlayerType() == Player.Type.PLAYER2 && Rect.intersects(enemyPlayerRect, bulletRect)) {
                             // is enemy
                             xyPositions.remove(i--);
                             rootLayout.removeView(bulletImage);
                             enemyPlayer.decraseHealth(10);
                         }
-                        gameScreen.updateHealths();
+                        gameScreenFragment.updateHealths();
                     }
                 });
             }
