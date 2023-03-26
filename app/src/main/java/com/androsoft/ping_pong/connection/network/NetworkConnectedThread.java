@@ -2,12 +2,11 @@ package com.androsoft.ping_pong.connection.network;
 
 import android.util.Log;
 import com.androsoft.ping_pong.connection.*;
-import com.androsoft.ping_pong.constant.Character;
 
 import java.io.IOException;
 import java.net.*;
 
-public class NetworkConnectedThread implements StreamController {
+public class NetworkConnectedThread implements StreamInterface {
     String local;
     int serverPort;
 
@@ -38,7 +37,7 @@ public class NetworkConnectedThread implements StreamController {
     //todo shoot ve xy kordinatlarını göndermeyi ayarla.
 
 
-    public static void setOnMessageEvent(OnMessageEvent onMessageEvent) {
+    public static void setOnMessageEvent(BattleInterface onMessageEvent) {
         new Thread(){
             @Override
             public void run() {
@@ -69,7 +68,7 @@ public class NetworkConnectedThread implements StreamController {
 
     }
 
-    public static void setOnGameProcess(OnGameProcess onGameProcess){
+    public static void setOnGameProcess(BattleInterface.OnGameProcess onGameProcess){
         setOnMessageEvent((data, ipAddress) -> {
             if(data.equals("SHOOT")){
                 onGameProcess.shoot();
@@ -84,7 +83,7 @@ public class NetworkConnectedThread implements StreamController {
         });
     }
 
-    public static void setOnBattleInit(OnBattleInit onBattleInit){
+    public static void setOnBattleInit(BattleInterface.OnBattleInit onBattleInit){
         setOnMessageEvent((data, ipAddress) -> {
             switch (data) {
                 case "find":
@@ -104,6 +103,16 @@ public class NetworkConnectedThread implements StreamController {
     @Override
     public void findDevice() {
         sendMessage("find");
+    }
+
+    @Override
+    public void acceptBattle() {
+        sendMessage("accept");
+    }
+
+    @Override
+    public void rejectBattle() {
+        sendMessage("reject");
     }
 
     @Override

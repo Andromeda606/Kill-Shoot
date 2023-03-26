@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.androsoft.ping_pong.fragment.GameScreenFragment;
-import com.androsoft.ping_pong.connection.StreamController;
+import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.view.BulletImage;
@@ -85,8 +85,8 @@ public class BulletPhysics {
         Log.wtf("SHOOT", "VİEW ADD YAPILDI");
     }
 
-    public void shoot(StreamController streamController) {
-        streamController.sendMessage("SHOOT");
+    public void shoot(StreamInterface streamInterface) {
+        streamInterface.sendMessage("SHOOT");
         shoot();
     }
 

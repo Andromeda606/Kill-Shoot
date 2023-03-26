@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import com.androsoft.ping_pong.connection.StreamController;
+import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.physics.BulletPhysics;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +29,9 @@ public class PlayerImage extends androidx.appcompat.widget.AppCompatImageView {
         if(getBulletPhysics() != null) getBulletPhysics().shoot();
     }
 
-    public void shoot(StreamController streamController){
+    public void shoot(StreamInterface streamInterface){
         if(getBulletPhysics() != null) getBulletPhysics().shoot();
-        streamController.shoot();
+        streamInterface.shoot();
     }
 
     public BulletPhysics getBulletPhysics() {

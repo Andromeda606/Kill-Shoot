@@ -2,6 +2,7 @@ package com.androsoft.ping_pong.constant;
 
 import com.androsoft.ping_pong.R;
 
+// Bunların Hepsini Ayrı Classa geçireceksin.
 public class Character {
     private int movementSpeed, seperatorSpeed;
     private int characterImage, bulletImage;
@@ -14,6 +15,7 @@ public class Character {
         TRINGLE,
         CIRCLER
     }
+
 
     public static Character convertTypeToCharacter(Character.Type type){
         Character character = new Character();

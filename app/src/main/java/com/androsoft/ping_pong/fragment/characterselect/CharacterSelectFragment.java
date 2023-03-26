@@ -29,7 +29,6 @@ public class CharacterSelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCharacterSelectBinding.inflate(inflater);
-        binding.ipAddressText.setText(String.format(getString(R.string.local_ip_address), DeviceUtil.getLocalIpAddress()));
         ArrayList<Character> characters = new ArrayList<>();
         for (Character.Type characterType : Character.Type.values()) {
             characters.add(Character.convertTypeToCharacter(characterType));

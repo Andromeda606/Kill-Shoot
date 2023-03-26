@@ -1,8 +1,7 @@
 package com.androsoft.ping_pong.connection.network;
 
 import com.androsoft.ping_pong.connection.ConnectionHelper;
-import com.androsoft.ping_pong.connection.StreamController;
-import com.androsoft.ping_pong.util.DeviceUtil;
+import com.androsoft.ping_pong.connection.StreamInterface;
 
 public class Network implements ConnectionHelper {
     private String ipAddress;
@@ -12,7 +11,7 @@ public class Network implements ConnectionHelper {
     }
 
     @Override
-    public StreamController createConnectedThread() throws Exception {
+    public StreamInterface createConnectedThread() throws Exception {
         return new NetworkConnectedThread(ipAddress, 11000);
     }
 

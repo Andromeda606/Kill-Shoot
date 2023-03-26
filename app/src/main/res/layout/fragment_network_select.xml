@@ -17,7 +17,7 @@
     <TextView
             android:text="Senin IP adresin: 192.168.0.0"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView6" android:gravity="center"/>
+            android:layout_height="wrap_content" android:id="@+id/yourIpAddressText" android:gravity="center"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

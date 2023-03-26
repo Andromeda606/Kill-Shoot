@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.androsoft.ping_pong.connection.ConnectionHelper;
-import com.androsoft.ping_pong.connection.StreamController;
+import com.androsoft.ping_pong.connection.StreamInterface;
 
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Bluetooth implements ConnectionHelper {
     Context context;
     BluetoothAdapter bluetoothAdapter;
-    StreamController streamController;
+    StreamInterface streamInterface;
     private static final UUID MY_UUID_SECURE =
             UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE =
@@ -33,7 +33,7 @@ public class Bluetooth implements ConnectionHelper {
 
 
     @Override
-    public StreamController createConnectedThread() throws Exception {
+    public StreamInterface createConnectedThread() throws Exception {
         try{
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
             UUID uuid = UUID.randomUUID();

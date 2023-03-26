@@ -6,8 +6,8 @@ import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
-import com.androsoft.ping_pong.connection.OnGameProcess;
-import com.androsoft.ping_pong.connection.StreamController;
+import com.androsoft.ping_pong.connection.BattleInterface;
+import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.connection.network.Network;
 import com.androsoft.ping_pong.connection.network.NetworkConnectedThread;
 import com.androsoft.ping_pong.constant.Character;
@@ -60,7 +60,7 @@ public class GameScreenFragment extends Fragment {
         binding.playerHealth.setText(String.valueOf(getEnemyPlayer().getHealth()));
     }
 
-    private void initListeners(StreamController connectedThread) {
+    private void initListeners(StreamInterface connectedThread) {
         PlayerImage player = getCurrentPlayer();
         binding.joystick.setOnMoveListener((angle, strength) -> {
             int width = player.getWidth();
@@ -125,7 +125,7 @@ public class GameScreenFragment extends Fragment {
         Bundle datas = getArguments();
 
         Network network = new Network(datas.getString("ipAddress"));
-        StreamController connectedThread;
+        StreamInterface connectedThread;
         try {
             connectedThread = network.createConnectedThread();
         } catch (Exception e) {
@@ -150,7 +150,7 @@ public class GameScreenFragment extends Fragment {
 
         initListeners(connectedThread);
         if (connectedThread != null) {
-            NetworkConnectedThread.setOnGameProcess(new OnGameProcess() {
+            NetworkConnectedThread.setOnGameProcess(new BattleInterface.OnGameProcess() {
                 @Override
                 public void shoot() {
                     getEnemyPlayer().shoot();
