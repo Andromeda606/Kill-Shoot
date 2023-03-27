@@ -7,7 +7,10 @@ public interface StreamInterface {
     void acceptBattle();
     void rejectBattle();
 
-    void sendAcceptRequest(int characterType);
+    void sendPaired();
+    void sendPairedSuccess();
+
+    void sendCharacterInformation(int characterType);
     void sendLocation(float x, float y);
     void shoot();
 }

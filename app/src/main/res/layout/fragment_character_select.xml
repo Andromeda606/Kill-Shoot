@@ -17,7 +17,7 @@
         <TextView
                 android:text="Düşman Şuanda Karakter Seçiyor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView8" android:gravity="center"/>
+                android:layout_height="wrap_content" android:id="@+id/enemyStatus" android:gravity="center"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,69 +33,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/characterList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" android:layout_gravity="center"/>
 
-        <!--<LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:background="#FFC107">
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
-                <ImageView
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" app:srcCompat="@drawable/ic_game_character1"
-                        android:layout_weight="1" android:layout_gravity="center"/>
-                <TextView
-                        android:text="GUNNER"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center" android:textSize="24sp"/>
-                <TextView
-                        android:text="Şerit halinde giden mermi gönderen ve ultisinde ise bir alana kalıcı lazer bırakan gemidir."
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
-                <ImageView
-                        android:layout_width="85dp"
-                        android:layout_height="100dp" app:srcCompat="@drawable/ic_game_character2"
-                        android:layout_weight="1" android:layout_gravity="center"/>
-                <TextView
-                        android:text="TRINGLER"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center" android:textSize="24sp"/>
-                <TextView
-                        android:text="Yavaş ama takip eden roket gönderen gemidir. Ultisinde ise 4 adet roket gönderir."
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="20dp">
-                <ImageView
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" app:srcCompat="@drawable/ic_game_character3"
-                        android:layout_weight="1" android:layout_gravity="center"/>
-                <TextView
-                        android:text="CIRCLER"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center" android:textSize="24sp"/>
-                <TextView
-                        android:text="Yuvarlak mayınlar göndererek düşmanın gelmesi durumunda patlatır. Ultisi daha büyük bir mayın bırakır. Canı diğerlerine kıyasla daha fazladır."
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:layout_weight="1"
-                        android:gravity="center"/>
-            </LinearLayout>
-        </LinearLayout>-->
     </LinearLayout>
 </FrameLayout>

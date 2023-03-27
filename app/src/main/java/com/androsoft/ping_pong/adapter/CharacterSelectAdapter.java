@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.androsoft.ping_pong.R;
 import com.androsoft.ping_pong.connection.network.Network;
+import com.androsoft.ping_pong.constant.BundleTags;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.fragment.characterselect.CharacterSelectFragment;
 import com.androsoft.ping_pong.fragment.characterselect.viewholder.CharacterSelectViewHolder;
@@ -40,17 +41,19 @@ public class CharacterSelectAdapter extends RecyclerView.Adapter<CharacterSelect
         holder.getShipTitle().setText(context.getString(character.getTitle()));
         holder.getShipDescription().setText(context.getString(character.getDescription()));
         holder.getShipLayout().setOnClickListener(v -> {
-            Bundle gameScreenBundle = new Bundle();
             String ipAddress = characterSelectFragment.getIpAddress();
-            gameScreenBundle.putString("ipAddress", characterSelectFragment.getIpAddress());
-            gameScreenBundle.putInt("characterType", position);
             Network network = new Network(ipAddress);
             try {
-                network.createConnectedThread().sendAcceptRequest(position);
+                network.createConnectedThread().sendCharacterInformation(position);
             } catch (Exception e) {
                 Log.wtf("error connecting",e.getMessage());
                 //AlertDialog.Builder ab = new AlertDialog.Builder(holder.itemView.getContext());
             }
+            characterSelectFragment.setPlayerType(position);
+            if(characterSelectFragment.getEnemyType() != -1){
+                characterSelectFragment.navigateGameScreen();
+            }
+
             //Navigation.findNavController(holder.itemView).navigate(R.id.gameScreenNavigate, gameScreenBundle);
         });
     }

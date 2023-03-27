@@ -5,13 +5,20 @@ import com.androsoft.ping_pong.constant.Character;
 public interface BattleInterface {
     abstract class OnBattleInit {
         // Başlangıç istek seçimi
-        public abstract void onRequest(String ipAddress); // find
+        public void onRequest(String ipAddress) // find
+        {
+
+        }
+
         // Savaş teklifine karşı taraftan yanıt alındı
-        public abstract void catchProcess(String ipAddress, Boolean status); // accept - reject
+        public void catchProcess(String ipAddress, Boolean status) // accept - reject
+        {
+
+        }
 
         // Kullanıcı seçim sistemi
         // chr: Type
-        void characterSelected(String ipAddress, Character.Type characterType) throws EndConnection{
+        public void characterSelected(String ipAddress, int characterType){
 
         }
     }
@@ -20,17 +27,23 @@ public interface BattleInterface {
         public void shoot() {
 
         }
-
         public void setup(Character.Type characterType) {
 
         }
 
+        public void paired() {
+
+        }
 
         public void xyStatus(float x, float y) {
 
         }
+
+        public void pairedSuccessfull(){
+
+        }
     }
 
-    void message(String data, String ipAddress) throws EndConnection;
+    void message(String data, String ipAddress);
 
 }

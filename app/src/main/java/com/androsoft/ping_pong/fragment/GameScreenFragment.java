@@ -10,9 +10,11 @@ import com.androsoft.ping_pong.connection.BattleInterface;
 import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.connection.network.Network;
 import com.androsoft.ping_pong.connection.network.NetworkConnectedThread;
+import com.androsoft.ping_pong.constant.BundleTags;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.databinding.FragmentGameScreenBinding;
+import com.androsoft.ping_pong.dialog.CustomDialog;
 import com.androsoft.ping_pong.view.PlayerImage;
 import com.androsoft.ping_pong.physics.BulletPhysics;
 import com.androsoft.ping_pong.util.DeviceUtil;
@@ -23,6 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Oyun içinde yapılacaklar
+ * Ekrana girildiğinde hemen "Oyuncu ekrana geldi" diye karşı ip ye istek atacağız karşı tarafta geldiğinde oyun başlayacak <br>
+ * Oyuncu ekrana gelene kadar "Karşı Takım Bekleniliyor" uyarısı alacak ve geldiğinde ise diyalog kapatılacak.<br>
+ * kullanıcı ateş ettiğinde karşı tarafa istek gidecek. Zaten buralar çoktan kodlandı.
+ * */
 public class GameScreenFragment extends Fragment {
     FragmentGameScreenBinding binding;
     public Player.Type PLAYER_TYPE = Player.Type.PLAYER2;
@@ -122,49 +130,75 @@ public class GameScreenFragment extends Fragment {
         // Syncing all bullets
         BulletPhysics.syncBullets(this, binding.gameArea);
         updateHealths();
-        Bundle datas = getArguments();
+        Bundle arguments = getArguments();
+        binding.pairingActivity.setVisibility(View.VISIBLE);
+        binding.gameArea.setVisibility(View.GONE);
 
-        Network network = new Network(datas.getString("ipAddress"));
+        Network network = new Network(arguments.getString(BundleTags.IP_ADDRESS));
         StreamInterface connectedThread;
         try {
             connectedThread = network.createConnectedThread();
         } catch (Exception e) {
-            new AlertDialog.Builder(this.getContext())
+            new CustomDialog(requireContext())
                     .setMessage("Karşı oyuncuya bağlanılamadı!")
                     .setTitle("HATA")
                     .setPositiveButton("Çık", null)
-                    .create()
                     .show();
             return binding.getRoot();
         }
+        Timer pairer = new Timer();
+        pairer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                connectedThread.sendPaired();
+            }
+        },250,250);
+
+
+        NetworkConnectedThread.setOnGameProcess(new BattleInterface.OnGameProcess() {
+            @Override
+            public void shoot() {
+                getEnemyPlayer().shoot();
+            }
+
+
+            @Override
+            public void xyStatus(float x, float y) {
+                requireActivity().runOnUiThread(() -> {
+                    ImageView enemy = getEnemyPlayer();
+                    enemy.setX(ScreenUtil.angleToWidth(x));
+                    enemy.setY(DeviceUtil.getScreenHeight() - ScreenUtil.angleToHeight(y));
+                });
+
+            }
+
+            @Override
+            public void paired() {
+                requireActivity().runOnUiThread(() -> {
+                    binding.pairingActivity.setVisibility(View.GONE);
+                    binding.gameArea.setVisibility(View.VISIBLE);
+                    connectedThread.sendPairedSuccess();
+                });
+            }
+
+            @Override
+            public void pairedSuccessfull() {
+                pairer.cancel();
+                pairer.purge();
+            }
+        });
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ScreenUtil.pxToDp(requireContext(), 50), ScreenUtil.pxToDp(requireContext(), 50));
         layoutParams.setMargins(0, 0, GameUtil.toAngle(DeviceUtil.getScreenWidth(), 10), 0);
         layoutParams.gravity = Gravity.CENTER | Gravity.END;
         binding.player2.setLayoutParams(layoutParams);
-        int type = (int) datas.get("characterType");
+        int type = Integer.parseInt(arguments.get(BundleTags.CHARACTER_TYPE).toString());
         Character.Type playerType = Character.intToCharacter(type);
-        int enemy = (int) datas.get("enemyType");
+        int enemy =Integer.parseInt(arguments.get(BundleTags.ENEMY_TYPE).toString());
         Character.Type enemyType = Character.intToCharacter(enemy);
         player.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER2, playerType, binding.gameArea));
         enemyPlayer.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER1, enemyType, binding.gameArea));
 
         initListeners(connectedThread);
-        if (connectedThread != null) {
-            NetworkConnectedThread.setOnGameProcess(new BattleInterface.OnGameProcess() {
-                @Override
-                public void shoot() {
-                    getEnemyPlayer().shoot();
-                }
-
-
-                @Override
-                public void xyStatus(float x, float y) {
-                    ImageView enemy = getEnemyPlayer();
-                    enemy.setX(ScreenUtil.angleToWidth(x));
-                    enemy.setY(DeviceUtil.getScreenHeight() - ScreenUtil.angleToHeight(y));
-                }
-            });
-        }
 
 
         return binding.getRoot();

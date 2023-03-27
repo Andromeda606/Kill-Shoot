@@ -12,6 +12,7 @@ import com.androsoft.ping_pong.connection.BattleInterface;
 import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.connection.network.Network;
 import com.androsoft.ping_pong.connection.network.NetworkConnectedThread;
+import com.androsoft.ping_pong.constant.BundleTags;
 import com.androsoft.ping_pong.databinding.FragmentNetworkSelectBinding;
 import com.androsoft.ping_pong.dialog.CustomDialog;
 import com.androsoft.ping_pong.util.DeviceUtil;
@@ -27,9 +28,12 @@ public class NetworkSelectFragment extends Fragment {
     }
 
     private void navigateCharacterSelect(String ipAddress){
-        Bundle bundle = new Bundle();
-        bundle.putString("ipAddress", ipAddress);
-        Navigation.findNavController(requireView()).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
+
+        requireActivity().runOnUiThread(() -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(BundleTags.IP_ADDRESS, ipAddress);
+            Navigation.findNavController(requireView()).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
+        });
     }
 
     @Override
@@ -66,7 +70,6 @@ public class NetworkSelectFragment extends Fragment {
             public void catchProcess(String ipAddress, Boolean status) {
                 if(status){
                     navigateCharacterSelect(ipAddress);
-                    return;
                 }
                 requireActivity().runOnUiThread(() -> new CustomDialog(requireContext())
                         .setTitle("Uyarı")
