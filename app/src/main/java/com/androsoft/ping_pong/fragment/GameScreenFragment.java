@@ -1,8 +1,10 @@
 package com.androsoft.ping_pong.fragment;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
@@ -15,11 +17,11 @@ import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.constant.Player;
 import com.androsoft.ping_pong.databinding.FragmentGameScreenBinding;
 import com.androsoft.ping_pong.dialog.CustomDialog;
-import com.androsoft.ping_pong.view.PlayerImage;
 import com.androsoft.ping_pong.physics.BulletPhysics;
 import com.androsoft.ping_pong.util.DeviceUtil;
 import com.androsoft.ping_pong.util.GameUtil;
 import com.androsoft.ping_pong.util.ScreenUtil;
+import com.androsoft.ping_pong.view.PlayerImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
@@ -30,7 +32,7 @@ import java.util.TimerTask;
  * Ekrana girildiğinde hemen "Oyuncu ekrana geldi" diye karşı ip ye istek atacağız karşı tarafta geldiğinde oyun başlayacak <br>
  * Oyuncu ekrana gelene kadar "Karşı Takım Bekleniliyor" uyarısı alacak ve geldiğinde ise diyalog kapatılacak.<br>
  * kullanıcı ateş ettiğinde karşı tarafa istek gidecek. Zaten buralar çoktan kodlandı.
- * */
+ */
 public class GameScreenFragment extends Fragment {
     FragmentGameScreenBinding binding;
     public Player.Type PLAYER_TYPE = Player.Type.PLAYER2;
@@ -76,8 +78,8 @@ public class GameScreenFragment extends Fragment {
             float dx = (float) Math.sin(Math.toRadians(angle)) * width;
             float dy = (float) Math.cos(Math.toRadians(angle)) * player.getHeight();
 
-            dx = player.getTranslationX() + dx * strength / 150;
-            dy = player.getTranslationY() + dy * strength / 150;
+            dx = player.getTranslationX() + dx * strength / 300;
+            dy = player.getTranslationY() + dy * strength / 300;
 
             float currentX = player.getX() + dx;
             float currentY = player.getY() + dy;
@@ -99,12 +101,18 @@ public class GameScreenFragment extends Fragment {
                 connectedThread.sendLocation(ScreenUtil.widthToAngle(player.getX()), ScreenUtil.heightToAngle(player.getY()));
         });
 
-        binding.joystickLayout.setOnTouchListener((v, event) -> {
+        binding.joystickLayout.setOnDragListener((v, event) -> {
             //todo not working properly
             binding.joystick.setVisibility(View.VISIBLE);
             binding.joystick.setTranslationX(v.getX());
             binding.joystick.setTranslationY(v.getY());
-            return false;
+            return true;
+        });
+        binding.joystickLayout.setOnTouchListener((v, event) -> {
+            binding.joystick.setVisibility(View.VISIBLE);
+            binding.joystick.setTranslationX(v.getX());
+            binding.joystick.setTranslationY(v.getY());
+            return true;
         });
 
         binding.shoot.setOnClickListener(v -> {
@@ -115,7 +123,7 @@ public class GameScreenFragment extends Fragment {
                 public void run() {
                     requireActivity().runOnUiThread(() -> binding.shoot.setEnabled(true));
                 }
-            }, getCurrentPlayer().getCharacterInfo().getDuration());
+            }, getCurrentPlayer().getCharacter().getDuration());
         });
     }
 
@@ -131,6 +139,9 @@ public class GameScreenFragment extends Fragment {
         BulletPhysics.syncBullets(this, binding.gameArea);
         updateHealths();
         Bundle arguments = getArguments();
+        if(arguments == null){
+            throw new RuntimeException("argument is null");
+        }
         binding.pairingActivity.setVisibility(View.VISIBLE);
         binding.gameArea.setVisibility(View.GONE);
 
@@ -152,8 +163,7 @@ public class GameScreenFragment extends Fragment {
             public void run() {
                 connectedThread.sendPaired();
             }
-        },250,250);
-
+        }, 250, 250);
 
         NetworkConnectedThread.setOnGameProcess(new BattleInterface.OnGameProcess() {
             @Override
@@ -169,7 +179,6 @@ public class GameScreenFragment extends Fragment {
                     enemy.setX(ScreenUtil.angleToWidth(x));
                     enemy.setY(DeviceUtil.getScreenHeight() - ScreenUtil.angleToHeight(y));
                 });
-
             }
 
             @Override
@@ -192,12 +201,11 @@ public class GameScreenFragment extends Fragment {
         layoutParams.gravity = Gravity.CENTER | Gravity.END;
         binding.player2.setLayoutParams(layoutParams);
         int type = Integer.parseInt(arguments.get(BundleTags.CHARACTER_TYPE).toString());
-        Character.Type playerType = Character.intToCharacter(type);
-        int enemy =Integer.parseInt(arguments.get(BundleTags.ENEMY_TYPE).toString());
-        Character.Type enemyType = Character.intToCharacter(enemy);
-        player.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER2, playerType, binding.gameArea));
-        enemyPlayer.setBulletPhysics(new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER1, enemyType, binding.gameArea));
-
+        Character playerType = Character.getCharacter(type, new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER2, binding.gameArea));
+        int enemy = Integer.parseInt(arguments.get(BundleTags.ENEMY_TYPE).toString());
+        Character enemyType = Character.getCharacter(enemy, new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER1, binding.gameArea));
+        player.setCharacter(playerType);
+        enemyPlayer.setCharacter(enemyType);
         initListeners(connectedThread);
 
 

@@ -1,12 +1,14 @@
 package com.androsoft.ping_pong.connection.network;
 
 import android.util.Log;
-import com.androsoft.ping_pong.connection.*;
-import com.androsoft.ping_pong.constant.Character;
+import com.androsoft.ping_pong.connection.BattleInterface;
+import com.androsoft.ping_pong.connection.StreamInterface;
 
 import java.io.IOException;
-import java.net.*;
-import java.util.Objects;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class NetworkConnectedThread implements StreamInterface {
     String local;

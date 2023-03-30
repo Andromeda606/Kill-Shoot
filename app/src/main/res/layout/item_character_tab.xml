@@ -7,7 +7,7 @@
             android:id="@+id/shipLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:layout_margin="20dp">
+            android:layout_height="match_parent" android:layout_margin="20dp" android:gravity="center">
         <ImageView
                 android:id="@+id/shipImage"
                 android:layout_width="85dp"

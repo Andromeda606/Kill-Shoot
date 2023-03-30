@@ -7,11 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import com.androsoft.ping_pong.connection.StreamInterface;
 import com.androsoft.ping_pong.constant.Character;
-import com.androsoft.ping_pong.physics.BulletPhysics;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerImage extends androidx.appcompat.widget.AppCompatImageView {
-    private BulletPhysics bulletPhysics;
+    private Character character;
     private int health = 100;
     public PlayerImage(@NonNull @NotNull Context context) {
         super(context);
@@ -26,27 +25,19 @@ public class PlayerImage extends androidx.appcompat.widget.AppCompatImageView {
     }
 
     public void shoot(){
-        if(getBulletPhysics() != null) getBulletPhysics().shoot();
+        if(getCharacter() != null) getCharacter().shoot();
     }
 
     public void shoot(StreamInterface streamInterface){
-        if(getBulletPhysics() != null) getBulletPhysics().shoot();
+        shoot();
         streamInterface.shoot();
     }
 
-    public BulletPhysics getBulletPhysics() {
-        return bulletPhysics;
-    }
 
     private void initCharacter(){
-        Character character = getCharacterInfo();
+        Character character = getCharacter();
         setImageDrawable(AppCompatResources.getDrawable(getContext(), character.getCharacterImage()));
         health = character.getHealth();
-    }
-
-    public void setBulletPhysics(BulletPhysics bulletPhysics) {
-        this.bulletPhysics = bulletPhysics;
-        initCharacter();
     }
 
     public void decraseHealth(int count){
@@ -57,7 +48,12 @@ public class PlayerImage extends androidx.appcompat.widget.AppCompatImageView {
         return health;
     }
 
-    public Character getCharacterInfo(){
-        return Character.convertTypeToCharacter(getBulletPhysics().getCharacterType());
+    public Character getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(Character character) {
+        this.character = character;
+        initCharacter();
     }
 }

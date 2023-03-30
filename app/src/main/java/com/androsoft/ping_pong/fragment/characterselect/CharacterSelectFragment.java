@@ -16,12 +16,13 @@ import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.databinding.FragmentCharacterSelectBinding;
 
 import java.util.ArrayList;
+
 /**
  * Karakter seçme işleminde yapılacaklar; <br>
  * Kullanıcı eğer karakteri seçtiyse karşı tarafa seçildiğine dair bir istek gönderilecek.<br>
  * Karşı taraf bu isteği alırsa kendisi de karakter seçti mi diye kontrol edecek eğer seçmediyse<br>seçmesini bekleyecek ve ekrana "Karşı oyuncu karakter seçti" yazacağız
  * Karakteri seçtiyse direkt oyuna gidecek fakat karşı tarafın da oyuna gelmesi gerektiğinden onu da bekleyeceğiz.
- * */
+ */
 public class CharacterSelectFragment extends Fragment {
     FragmentCharacterSelectBinding binding;
     boolean isUsed = false;
@@ -36,7 +37,7 @@ public class CharacterSelectFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void navigateGameScreen(){
+    public void navigateGameScreen() {
         Bundle bundle = new Bundle(requireArguments());
         bundle.putString(BundleTags.CHARACTER_TYPE, getPlayerType() + "");
         bundle.putString(BundleTags.ENEMY_TYPE, getEnemyType() + "");
@@ -48,15 +49,17 @@ public class CharacterSelectFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentCharacterSelectBinding.inflate(inflater);
         ArrayList<Character> characters = new ArrayList<>();
-        for (Character.Type characterType : Character.Type.values()) {
-            characters.add(Character.convertTypeToCharacter(characterType));
+        Character character = Character.getCharacter(0, null);
+        for (int i = 1; character != null; i++) {
+            characters.add(character);
+            character = Character.getCharacter(i, null);
         }
         binding.characterList.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         binding.characterList.setAdapter(new CharacterSelectAdapter(characters, this));
         NetworkConnectedThread.setOnBattleInit(new BattleInterface.OnBattleInit() {
             @Override
             public void characterSelected(String ipAddress, int characterType) {
-                if(isUsed()){
+                if (isUsed()) {
                     navigateGameScreen();
                     return;
                 }
@@ -66,7 +69,7 @@ public class CharacterSelectFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public String getIpAddress(){
+    public String getIpAddress() {
         return requireArguments().getString(BundleTags.IP_ADDRESS);
     }
 

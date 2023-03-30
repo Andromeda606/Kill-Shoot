@@ -1,7 +1,6 @@
 package com.androsoft.ping_pong.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.androsoft.ping_pong.R;
 import com.androsoft.ping_pong.connection.network.Network;
-import com.androsoft.ping_pong.constant.BundleTags;
 import com.androsoft.ping_pong.constant.Character;
 import com.androsoft.ping_pong.fragment.characterselect.CharacterSelectFragment;
 import com.androsoft.ping_pong.fragment.characterselect.viewholder.CharacterSelectViewHolder;
