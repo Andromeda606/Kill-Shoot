@@ -73,13 +73,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.androsoft.ping_pong.view.PlayerImage
+        <com.androsoft.killshot.view.PlayerImage
                 android:src="@drawable/ic_game_character1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/player1"
                 android:layout_gravity="center|left" android:rotation="90"/>
-        <com.androsoft.ping_pong.view.PlayerImage
+        <com.androsoft.killshot.view.PlayerImage
                 android:src="@drawable/ic_game_character2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
