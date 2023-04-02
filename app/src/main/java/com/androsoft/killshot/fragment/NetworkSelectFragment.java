@@ -1,5 +1,7 @@
 package com.androsoft.killshot.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +17,10 @@ import com.androsoft.killshot.connection.network.NetworkConnectedThread;
 import com.androsoft.killshot.constant.BundleTags;
 import com.androsoft.killshot.databinding.FragmentNetworkSelectBinding;
 import com.androsoft.killshot.dialog.CustomDialog;
+import com.androsoft.killshot.dialog.InfoDialog;
 import com.androsoft.killshot.util.DeviceUtil;
+
+import java.util.HashMap;
 
 public class NetworkSelectFragment extends Fragment {
     public NetworkSelectFragment() {
@@ -27,7 +32,7 @@ public class NetworkSelectFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void navigateCharacterSelect(String ipAddress){
+    private void navigateCharacterSelect(String ipAddress) {
 
         requireActivity().runOnUiThread(() -> {
             Bundle bundle = new Bundle();
@@ -68,7 +73,7 @@ public class NetworkSelectFragment extends Fragment {
 
             @Override
             public void catchProcess(String ipAddress, Boolean status) {
-                if(status){
+                if (status) {
                     navigateCharacterSelect(ipAddress);
                     return;
                 }
@@ -89,6 +94,21 @@ public class NetworkSelectFragment extends Fragment {
                 Log.wtf("eerror", e.getMessage());
             }
         });
+        binding.iconHelp.setOnClickListener(v ->
+                new InfoDialog(requireContext())
+                        .setHyperlinks(new HashMap<String, String>() {{
+                            put("Spaceship icons created by Freepik - Flaticon", "https://www.flaticon.com/free-icons/spaceship");
+                            put("Spaceship icons created by photo3idea_studio - Flaticon", "https://www.flaticon.com/free-icons/spaceship");
+                            put("Bullet point icons created by Freepik - Flaticon", "https://www.flaticon.com/free-icons/bullet-point");
+                            put("Munitions icons created by Smashicons - Flaticon", "https://www.flaticon.com/free-icons/munitions");
+                            put("Bullet icons created by Freepik - Flaticon", "https://www.flaticon.com/free-icons/bullet");
+                            put("Spaceship icons created by Freepik - Flaticon 2", "https://www.flaticon.com/free-icons/spaceship");
+                            put("Spaceship icons created by Freepik - Flaticon 3", "https://www.flaticon.com/free-icons/spaceship");
+                        }})
+                        .setTitle("Yardım")
+                        .setPositiveButton("Kapat", null)
+                        .show()
+        );
         return binding.getRoot();
     }
 }
