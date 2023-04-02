@@ -56,7 +56,7 @@ public abstract class Character {
                         600,
                         R.drawable.ic_game_character2,
                         R.drawable.ic_game_bullet2,
-                        1000,
+                        1500,
                         1000,
                         R.string.game_character_1_title,
                         R.string.game_character_1_description
@@ -70,7 +70,7 @@ public abstract class Character {
                         R.drawable.ic_game_character3,
                         R.drawable.ic_game_bullet3,
                         2500,
-                        1000,
+                        2000,
                         R.string.game_character_3_title,
                         R.string.game_character_3_description
                 );

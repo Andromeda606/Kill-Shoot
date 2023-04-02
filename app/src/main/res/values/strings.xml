@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ping-Pong</string>
+    <string name="app_name">Kill-Shoot</string>
     <string name="local_ip_address">Your IP Address: %s</string>
     <string name="game_character_1_title">GUNNER</string>
     <string name="game_character_1_description">It is the ship that sends bullets going in a strip and leaves a

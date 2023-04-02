@@ -70,6 +70,7 @@ public class NetworkSelectFragment extends Fragment {
             public void catchProcess(String ipAddress, Boolean status) {
                 if(status){
                     navigateCharacterSelect(ipAddress);
+                    return;
                 }
                 requireActivity().runOnUiThread(() -> new CustomDialog(requireContext())
                         .setTitle("Uyarı")

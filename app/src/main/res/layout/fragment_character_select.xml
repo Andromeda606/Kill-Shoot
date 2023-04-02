@@ -18,18 +18,6 @@
                 android:text="Düşman Şuanda Karakter Seçiyor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/enemyStatus" android:gravity="center"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/editTextTextPersonName" android:gravity="center" android:hint="IP Adresi giriniz."
-                android:textSize="20sp" android:visibility="gone"/>
-        <TextView
-                android:text="IP Adresiniz: "
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/ipAddressText" android:gravity="center"
-                android:textSize="16sp" android:visibility="gone"/>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/characterList"
                 android:layout_width="match_parent"

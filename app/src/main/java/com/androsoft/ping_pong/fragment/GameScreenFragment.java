@@ -137,7 +137,6 @@ public class GameScreenFragment extends Fragment {
         binding.textView3.setText(DeviceUtil.getLocalIpAddress());
         // Syncing all bullets
         BulletPhysics.syncBullets(this, binding.gameArea);
-        updateHealths();
         Bundle arguments = getArguments();
         if(arguments == null){
             throw new RuntimeException("argument is null");
@@ -200,6 +199,11 @@ public class GameScreenFragment extends Fragment {
         layoutParams.setMargins(0, 0, GameUtil.toAngle(DeviceUtil.getScreenWidth(), 10), 0);
         layoutParams.gravity = Gravity.CENTER | Gravity.END;
         binding.player2.setLayoutParams(layoutParams);
+        FrameLayout.LayoutParams layoutParamsEnemy = new FrameLayout.LayoutParams(ScreenUtil.pxToDp(requireContext(), 50), ScreenUtil.pxToDp(requireContext(), 50));
+        layoutParamsEnemy.setMargins(GameUtil.toAngle(DeviceUtil.getScreenWidth(), 10), 0, 0, 0);
+        layoutParamsEnemy.gravity = Gravity.CENTER | Gravity.START;
+        binding.player1.setLayoutParams(layoutParamsEnemy);
+
         int type = Integer.parseInt(arguments.get(BundleTags.CHARACTER_TYPE).toString());
         Character playerType = Character.getCharacter(type, new BulletPhysics(GameScreenFragment.this, Player.Type.PLAYER2, binding.gameArea));
         int enemy = Integer.parseInt(arguments.get(BundleTags.ENEMY_TYPE).toString());
@@ -207,6 +211,7 @@ public class GameScreenFragment extends Fragment {
         player.setCharacter(playerType);
         enemyPlayer.setCharacter(enemyType);
         initListeners(connectedThread);
+        updateHealths();
 
 
         return binding.getRoot();

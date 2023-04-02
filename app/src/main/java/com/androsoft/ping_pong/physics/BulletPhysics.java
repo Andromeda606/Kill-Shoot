@@ -105,13 +105,13 @@ public class BulletPhysics {
                             // is player
                             XY_POSITIONS.remove(i--);
                             rootLayout.removeView(bulletImage);
-                            currentPlayer.decraseHealth(10);
+                            currentPlayer.decraseHealth(currentPlayer.getCharacter().getDamage());
                             DeviceUtil.vibrate(gameScreenFragment.requireContext(), 500);
                         } else if (bulletImage.getPlayerType() == Player.Type.PLAYER2 && Rect.intersects(enemyPlayerRect, bulletRect)) {
                             // is enemy
                             XY_POSITIONS.remove(i--);
                             rootLayout.removeView(bulletImage);
-                            enemyPlayer.decraseHealth(10);
+                            enemyPlayer.decraseHealth(enemyPlayer.getCharacter().getDamage());
                         }
                         gameScreenFragment.updateHealths();
                     }

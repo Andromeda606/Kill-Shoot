@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class CharacterSelectFragment extends Fragment {
     FragmentCharacterSelectBinding binding;
-    boolean isUsed = false;
     int enemyType = -1, playerType = -1;
 
     public CharacterSelectFragment() {
@@ -38,11 +37,13 @@ public class CharacterSelectFragment extends Fragment {
     }
 
     public void navigateGameScreen() {
-        Bundle bundle = new Bundle(requireArguments());
-        bundle.putString(BundleTags.CHARACTER_TYPE, getPlayerType() + "");
-        bundle.putString(BundleTags.ENEMY_TYPE, getEnemyType() + "");
-        Navigation.findNavController(requireView()).navigate(R.id.action_CharacterSelectFragment_to_GameFragment, bundle);
-    }
+        requireActivity().runOnUiThread(() -> {
+            Bundle bundle = new Bundle(requireArguments());
+            bundle.putString(BundleTags.CHARACTER_TYPE, getPlayerType() + "");
+            bundle.putString(BundleTags.ENEMY_TYPE, getEnemyType() + "");
+            Navigation.findNavController(requireView()).navigate(R.id.action_CharacterSelectFragment_to_GameFragment, bundle);
+        });
+   }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,11 +60,10 @@ public class CharacterSelectFragment extends Fragment {
         NetworkConnectedThread.setOnBattleInit(new BattleInterface.OnBattleInit() {
             @Override
             public void characterSelected(String ipAddress, int characterType) {
-                if (isUsed()) {
-                    navigateGameScreen();
-                    return;
-                }
                 setEnemyType(characterType);
+                if (getPlayerType() != -1) {
+                    navigateGameScreen();
+                }
             }
         });
         return binding.getRoot();
@@ -71,10 +71,6 @@ public class CharacterSelectFragment extends Fragment {
 
     public String getIpAddress() {
         return requireArguments().getString(BundleTags.IP_ADDRESS);
-    }
-
-    public boolean isUsed() {
-        return isUsed;
     }
 
     public void setEnemyType(int enemyType) {
@@ -92,9 +88,5 @@ public class CharacterSelectFragment extends Fragment {
 
     public int getEnemyType() {
         return enemyType;
-    }
-
-    public void setUsed(boolean used) {
-        isUsed = used;
     }
 }

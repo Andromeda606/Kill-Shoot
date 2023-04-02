@@ -3,7 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="#00AEFF"
+             android:background="@drawable/background"
              android:gravity="center"
              tools:context=".fragment.GameScreenFragment">
 
@@ -11,7 +11,7 @@
     <LinearLayout
             android:id="@+id/pairingActivity"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" android:visibility="gone">
 
         <ImageView
                 android:src="@drawable/ic_game_character2"
@@ -38,7 +38,7 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:id="@+id/gameArea"
-            android:layout_height="match_parent" android:visibility="gone">
+            android:layout_height="match_parent" android:visibility="visible">
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
