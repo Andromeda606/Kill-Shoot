@@ -1,6 +1,8 @@
 <resources>
+    <!-- Application name -->
     <string name="app_name">Kill-Shoot</string>
     <string name="local_ip_address">Your IP Address: %s</string>
+    <!-- Character Details -->
     <string name="game_character_1_title">GUNNER</string>
     <string name="game_character_1_description">It is the ship that sends bullets going in a strip and leaves a
         permanent laser in an area in its ult.
@@ -13,5 +15,24 @@
     <string name="game_character_3_description">It sends round mines and detonates when the enemy arrives. His ultimate
         drops a larger mine. He has more life than others.
     </string>
+    <!-- Game Root Labels -->
+    <string name="enemy_dead">You Won!</string>
+    <string name="you_dead">You Lost!</string>
+    <string name="close">Close</string>
+    <string name="next">Next</string>
+    <string name="error">error</string>
+    <string name="exit">exit</string>
+    <string name="accept">accept</string>
+    <string name="reject">reject</string>
+    <string name="warning">warning</string>
+    <!-- Battle Request -->
     <string name="enemy_selected">Enemy Selected Character, Selected %s</string>
+    <string name="enter_enemy_ip_address">Enter Enemy IP Address</string>
+    <string name="failed_connection">Failed to connect to opposite player!</string>
+    <string name="battle_request">The Enemy has sent a War Offer! IP Address: %s</string>
+    <string name="battle_request_title">War Offer</string>
+    <string name="rejected_battle_request">The enemy rejected the war offer.</string>
+    <string name="ok">OK</string>
+    <string name="help">Help</string>
+    <string name="help_detail">I was able to find the icons using the links below.</string>
 </resources>

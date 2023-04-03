@@ -11,11 +11,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView4" android:gravity="center"/>
     <TextView
-            android:text="Devam etmek için düşmanın IP Adresini giriniz."
+            android:text="@string/enter_enemy_ip_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center"/>
     <TextView
-            android:text="Senin IP adresin: 192.168.0.0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/yourIpAddressText" android:gravity="center"/>
     <EditText
@@ -25,7 +24,6 @@
             android:ems="10"
             android:id="@+id/ipAddressText" android:gravity="center"/>
     <Button
-            android:text="Devam Et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/button"/>
     <ImageView

@@ -61,12 +61,12 @@ public class NetworkSelectFragment extends Fragment {
                     }
 
                     new CustomDialog(requireContext())
-                            .setMessage("Düşman Savaş Teklifi gönderdi! IP Adresi: " + ipAddress)
-                            .setPositiveButton("KABUL ET", (dialog, which) -> {
+                            .setMessage(String.format(getString(R.string.battle_request), ipAddress))
+                            .setPositiveButton(getString(R.string.accept).toUpperCase(), (dialog, which) -> {
                                 streamInterface.acceptBattle();
                                 navigateCharacterSelect(ipAddress);
                             })
-                            .setNeutralButton("REDDET", (dialog, which) -> streamInterface.rejectBattle())
+                            .setNeutralButton(getString(R.string.reject).toUpperCase(), (dialog, which) -> streamInterface.rejectBattle())
                             .show();
                 });
             }
@@ -78,9 +78,9 @@ public class NetworkSelectFragment extends Fragment {
                     return;
                 }
                 requireActivity().runOnUiThread(() -> new CustomDialog(requireContext())
-                        .setTitle("Uyarı")
-                        .setMessage("Düşman savaş teklifini reddetti")
-                        .setPositiveButton("tamam", null)
+                        .setTitle(getString(R.string.warning).toUpperCase())
+                        .setMessage(getString(R.string.rejected_battle_request))
+                        .setPositiveButton(getString(R.string.ok).toUpperCase(), null)
                         .show());
 
             }
@@ -105,8 +105,8 @@ public class NetworkSelectFragment extends Fragment {
                             put("Spaceship icons created by Freepik - Flaticon 2", "https://www.flaticon.com/free-icons/spaceship");
                             put("Spaceship icons created by Freepik - Flaticon 3", "https://www.flaticon.com/free-icons/spaceship");
                         }})
-                        .setTitle("Yardım")
-                        .setPositiveButton("Kapat", null)
+                        .setTitle(getString(R.string.help))
+                        .setPositiveButton(getString(R.string.close), null)
                         .show()
         );
         return binding.getRoot();

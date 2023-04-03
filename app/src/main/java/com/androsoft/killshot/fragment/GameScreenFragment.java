@@ -1,5 +1,6 @@
 package com.androsoft.killshot.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
+import com.androsoft.killshot.R;
 import com.androsoft.killshot.connection.BattleInterface;
 import com.androsoft.killshot.connection.StreamInterface;
 import com.androsoft.killshot.connection.network.Network;
@@ -66,8 +68,20 @@ public class GameScreenFragment extends Fragment {
     }
 
     public void updateHealths() {
-        binding.enemyHealth.setText(String.valueOf(getCurrentPlayer().getHealth()));
-        binding.playerHealth.setText(String.valueOf(getEnemyPlayer().getHealth()));
+        int enemyHealth = getEnemyPlayer().getHealth(), playerHealth = getCurrentPlayer().getHealth();
+        binding.enemyHealth.setText(String.valueOf(playerHealth));
+        binding.playerHealth.setText(String.valueOf(enemyHealth));
+        if(playerHealth <= 0){
+            binding.gameArea.setVisibility(View.GONE);
+            binding.initialLayout.setVisibility(View.VISIBLE);
+            binding.initialLayout.setBackgroundColor(Color.parseColor("#3D832A"));
+            binding.resultGameText.setText(getString(R.string.you_dead));
+        }
+        if (enemyHealth <= 0){
+            binding.gameArea.setVisibility(View.GONE);
+            binding.initialLayout.setVisibility(View.VISIBLE);
+            binding.resultGameText.setText(getString(R.string.enemy_dead));
+        }
     }
 
     private void initListeners(StreamInterface connectedThread) {
@@ -150,9 +164,9 @@ public class GameScreenFragment extends Fragment {
             connectedThread = network.createConnectedThread();
         } catch (Exception e) {
             new CustomDialog(requireContext())
-                    .setMessage("Karşı oyuncuya bağlanılamadı!")
-                    .setTitle("HATA")
-                    .setPositiveButton("Çık", null)
+                    .setMessage(getString(R.string.failed_connection))
+                    .setTitle(getString(R.string.error).toUpperCase())
+                    .setPositiveButton(getString(R.string.exit).toUpperCase(), null)
                     .show();
             return binding.getRoot();
         }
