@@ -14,6 +14,8 @@ import com.androsoft.killshot.connection.network.NetworkConnectedThread;
 import com.androsoft.killshot.constant.BundleTags;
 import com.androsoft.killshot.constant.Character;
 import com.androsoft.killshot.databinding.FragmentCharacterSelectBinding;
+import com.androsoft.killshot.util.DeviceUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -46,9 +48,10 @@ public class CharacterSelectFragment extends Fragment {
    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCharacterSelectBinding.inflate(inflater);
+        binding.ipAddressText.setText(String.format(requireActivity().getString(R.string.local_ip_address), DeviceUtil.getLocalIpAddress()));
         ArrayList<Character> characters = new ArrayList<>();
         Character character = Character.getCharacter(0, null);
         for (int i = 1; character != null; i++) {
@@ -75,7 +78,7 @@ public class CharacterSelectFragment extends Fragment {
 
     public void setEnemyType(int enemyType) {
         this.enemyType = enemyType;
-        requireActivity().runOnUiThread(() -> binding.enemyStatus.setText("Düşman karakteri seçti: " + enemyType));
+        requireActivity().runOnUiThread(() -> binding.enemyStatus.setText(String.format(getString(R.string.enemy_selected), Character.getCharacterName(enemyType))));
     }
 
     public int getPlayerType() {

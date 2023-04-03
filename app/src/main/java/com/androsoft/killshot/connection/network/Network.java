@@ -4,14 +4,14 @@ import com.androsoft.killshot.connection.ConnectionHelper;
 import com.androsoft.killshot.connection.StreamInterface;
 
 public class Network implements ConnectionHelper {
-    private String ipAddress;
+    private final String ipAddress;
 
     public Network(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
     @Override
-    public StreamInterface createConnectedThread() throws Exception {
+    public StreamInterface createConnectedThread() {
         return new NetworkConnectedThread(ipAddress, 11000);
     }
 

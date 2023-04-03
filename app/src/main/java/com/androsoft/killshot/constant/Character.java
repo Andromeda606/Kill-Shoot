@@ -79,6 +79,19 @@ public abstract class Character {
         }
     }
 
+    public static String getCharacterName(int type){
+        switch (type){
+            case 0:
+                return "Gunner";
+            case 1:
+                return "Tringle";
+            case 2:
+                return "Circler";
+            default:
+                return null;
+        }
+    }
+
     public BulletPhysics getBulletPhysics() {
         return bulletPhysics;
     }

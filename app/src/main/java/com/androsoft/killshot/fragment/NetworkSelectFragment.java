@@ -1,7 +1,5 @@
 package com.androsoft.killshot.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,9 +33,11 @@ public class NetworkSelectFragment extends Fragment {
     private void navigateCharacterSelect(String ipAddress) {
 
         requireActivity().runOnUiThread(() -> {
+            View view = getView();
+            if (view == null) return; // View null olabilir çünkü navigate edildikten sonra çağrılabilir (127.0.0.1 yüzünden)
             Bundle bundle = new Bundle();
             bundle.putString(BundleTags.IP_ADDRESS, ipAddress);
-            Navigation.findNavController(requireView()).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
+            Navigation.findNavController(view).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
         });
     }
 

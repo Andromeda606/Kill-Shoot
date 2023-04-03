@@ -37,7 +37,7 @@ public class BulletPhysics {
 
 
     public BulletImage createBullet(int bulletImageResId) {
-        BulletImage bulletImage = new BulletImage(gameScreenFragment.requireActivity());
+        BulletImage bulletImage = new BulletImage(getActivity());
         bulletImage.setImageResource(bulletImageResId);
         bulletImage.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
         if (Player.Type.PLAYER2 == playerType)
@@ -58,7 +58,7 @@ public class BulletPhysics {
         if (bulletImage.getParent() != null) {
             removeScreen(bulletImage);
         }
-        gameScreenFragment.requireActivity().runOnUiThread(() -> gameArea.addView(bulletImage));
+        getActivity().runOnUiThread(() -> gameArea.addView(bulletImage));
 
     }
 
@@ -69,7 +69,7 @@ public class BulletPhysics {
     public void removeScreen(BulletImage bulletImage) {
         FrameLayout gameArea = getRootLayout();
         bulletImage.setStatus(false);
-        gameScreenFragment.requireActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
+        getActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
     }
 
     public PlayerImage getEnemy(Player.Type playerType){

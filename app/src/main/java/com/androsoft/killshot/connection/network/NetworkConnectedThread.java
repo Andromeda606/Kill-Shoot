@@ -33,6 +33,9 @@ public class NetworkConnectedThread implements StreamInterface {
                 } catch (IOException e) {
                     Log.wtf("IOException", e.getMessage());
                     throw new RuntimeException(e);
+                } catch (SecurityException e){
+                    Log.wtf("SecurityException", e.getMessage());
+                    throw new RuntimeException(e);
                 }
                 super.run();
             }
