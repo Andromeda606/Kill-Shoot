@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ChatGPT 3 kullanılarak çevrildi. -->
+    <!-- Uygulama adı -->
+    <string name="local_ip_address">IP Adresiniz: %s</string>
+    <!-- Karakter Detayları -->
+    <string name="game_character_1_description">Mermileri bir şerit halinde gönderen ve ultisinde bir alanda kalıcı bir lazer bırakan gemi.
+    </string>
+    <string name="game_character_2_description">Yavaş ancak izleyen roketi gönderen gemi. Ultisiyle 4 roket gönderir.
+    </string>
+    <string name="game_character_3_description">Yuvarlak mayınlar gönderir ve düşman varınca patlar. Ultisiyle daha büyük bir mayın bırakır. Diğerlerinden daha fazla canı vardır.
+    </string>
+    <!-- Oyun Kök Etiketleri -->
+    <string name="enemy_dead">Kazandınız!</string>
+    <string name="you_dead">Kaybettiniz!</string>
+    <string name="close">Kapat</string>
+    <string name="next">İleri</string>
+    <string name="error">Hata</string>
+    <string name="exit">Çıkış</string>
+    <string name="accept">Kabul</string>
+    <string name="reject">Reddet</string>
+    <string name="warning">Uyarı</string>
+    <!-- Savaş İsteği -->
+    <string name="enemy_selected">Düşman Karakterini Seçti, Seçilen: %s</string>
+    <string name="enter_enemy_ip_address">Düşman IP Adresini Girin</string>
+    <string name="failed_connection">Karşı oyuncuya bağlanılamadı!</string>
+    <string name="battle_request">Düşman bir Savaş Teklifi gönderdi! IP Adresi: %s</string>
+    <string name="battle_request_title">Savaş Teklifi</string>
+    <string name="rejected_battle_request">Düşman savaş teklifini reddetti.</string>
+    <string name="ok">Tamam</string>
+    <string name="help">Yardım</string>
+    <string name="help_detail">İkonları aşağıdaki linkleri kullanarak bulabildim.</string>
+</resources>
