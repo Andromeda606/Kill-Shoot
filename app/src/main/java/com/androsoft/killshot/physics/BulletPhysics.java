@@ -86,7 +86,10 @@ public class BulletPhysics {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                gameScreenFragment.requireActivity().runOnUiThread(() -> {
+                Activity activity = gameScreenFragment.getActivity();
+                if (activity == null || activity.isFinishing() || activity.isDestroyed())
+                    return;
+                activity.runOnUiThread(() -> {
                     Rect enemyPlayerRect = new Rect();
                     Rect currentPlayerRect = new Rect();
                     enemyPlayer.getHitRect(enemyPlayerRect);
@@ -105,13 +108,13 @@ public class BulletPhysics {
                             // is player
                             XY_POSITIONS.remove(i--);
                             rootLayout.removeView(bulletImage);
-                            currentPlayer.decraseHealth(currentPlayer.getCharacter().getDamage());
-                            DeviceUtil.vibrate(gameScreenFragment.requireContext(), 500);
+                            currentPlayer.decraseHealth(enemyPlayer.getCharacter().getDamage());
+                            DeviceUtil.vibrate(activity.getApplicationContext(), 500);
                         } else if (bulletImage.getPlayerType() == Player.Type.PLAYER2 && Rect.intersects(enemyPlayerRect, bulletRect)) {
                             // is enemy
                             XY_POSITIONS.remove(i--);
                             rootLayout.removeView(bulletImage);
-                            enemyPlayer.decraseHealth(enemyPlayer.getCharacter().getDamage());
+                            enemyPlayer.decraseHealth(currentPlayer.getCharacter().getDamage());
                         }
                         gameScreenFragment.updateHealths();
                     }

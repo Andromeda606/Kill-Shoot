@@ -20,19 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_controller);
-        NavController navCo = navHostFragment.getNavController();
+        navHostFragment.getNavController();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
     }
 }

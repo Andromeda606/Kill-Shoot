@@ -35,4 +35,5 @@
     <string name="ok">OK</string>
     <string name="help">Help</string>
     <string name="help_detail">I was able to find the icons using the links below.</string>
+    <string name="connect_apply_error">Player Cannot Apply your battle request</string>
 </resources>

@@ -30,4 +30,5 @@
     <string name="ok">Tamam</string>
     <string name="help">Yardım</string>
     <string name="help_detail">İkonları aşağıdaki linkleri kullanarak bulabildim.</string>
+    <string name="connect_apply_error">Oyuncuya Bağlanılamadı</string>
 </resources>

@@ -99,7 +99,7 @@ public class GameScreenFragment extends Fragment {
             float currentY = player.getY() + dy;
             int wall = 10;
             if (
-                    currentX <= DeviceUtil.getScreenWidth() - GameUtil.toAngle(DeviceUtil.getScreenWidth(), 5)
+                    currentX <= DeviceUtil.getScreenWidth() - GameUtil.toAngle(DeviceUtil.getScreenWidth(), wall)
                             && currentX >= GameUtil.toAngle(DeviceUtil.getScreenWidth(), wall)
             ) {
                 player.setTranslationX(dx);

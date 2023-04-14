@@ -37,7 +37,11 @@ public class NetworkSelectFragment extends Fragment {
             if (view == null) return; // View null olabilir çünkü navigate edildikten sonra çağrılabilir (127.0.0.1 yüzünden)
             Bundle bundle = new Bundle();
             bundle.putString(BundleTags.IP_ADDRESS, ipAddress);
-            Navigation.findNavController(view).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
+            try {
+                Navigation.findNavController(view).navigate(R.id.action_NetworkSelectFragment_to_CharacterSelectFragment, bundle);
+            } catch (Exception e) {
+                Log.e("NetworkSelectFragment", "navigateCharacterSelect: ", e);
+            }
         });
     }
 

@@ -72,7 +72,6 @@ public class Tringle extends Character {
                     ObjectAnimator animY = ObjectAnimator.ofFloat(bullet, "translationY", enemyImage.getY());
                     animX.setDuration(getMovementSpeed());
                     double angle = Math.toDegrees(Math.atan2(bullet.getY() - enemyImage.getY(), bullet.getX() - enemyImage.getX()));
-                    Log.wtf("angle", String.valueOf(angle));
                     ObjectAnimator animZ = ObjectAnimator.ofFloat(bullet, "rotation", (int) (180 - angle));
                     animY.setDuration(getMovementSpeed());
                     animZ.setDuration(200);

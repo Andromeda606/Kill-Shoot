@@ -3,6 +3,7 @@ package com.androsoft.killshot.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import com.androsoft.killshot.R;
 
 // Tasarım değişikliğinde bütün dialogların değişmesi için.
 public class CustomDialog {
@@ -14,9 +15,9 @@ public class CustomDialog {
 
     public static void showConnectionErrorDialog(Context context){
         new CustomDialog(context)
-                .setTitle("Uyarı")
-                .setMessage("Oyuncuya Bağlanılamadı")
-                .setPositiveButton("OK", null)
+                .setTitle(context.getString(R.string.warning))
+                .setMessage(context.getString(R.string.connect_apply_error))
+                .setPositiveButton(context.getString(R.string.ok), null)
                 .show();
     }
 

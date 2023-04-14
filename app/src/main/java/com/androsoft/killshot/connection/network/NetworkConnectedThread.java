@@ -41,7 +41,6 @@ public class NetworkConnectedThread implements StreamInterface {
             }
         }.start();
     }
-    //todo shoot ve xy kordinatlarını göndermeyi ayarla.
 
 
     static DatagramSocket dsocket = null;
@@ -59,15 +58,16 @@ public class NetworkConnectedThread implements StreamInterface {
                     while (true) {
                         dsocket.receive(packet);
                         String data = new String(buffer, 0, packet.getLength());
-                        Log.wtf("data", data);
                         packet.setLength(buffer.length);
                         onMessageEvent.message(data, packet.getAddress().getHostAddress());
                     }
                 } catch (IOException e) {
                     Log.wtf("UDP ALINIRKEN HATA", e.getMessage());
                     if(e.getMessage() != null && e.getMessage().contains("EADDRINUSE")){
-                        dsocket.close();
-                        dsocket.disconnect();
+                        if (dsocket != null){
+                            dsocket.close();
+                            dsocket.disconnect();
+                        }
                         setOnMessageEvent(onMessageEvent);
                     }
                     e.printStackTrace();
