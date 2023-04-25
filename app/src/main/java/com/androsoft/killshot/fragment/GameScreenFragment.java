@@ -1,5 +1,6 @@
 package com.androsoft.killshot.fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -84,6 +85,7 @@ public class GameScreenFragment extends Fragment {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initListeners(StreamInterface connectedThread) {
         PlayerImage player = getCurrentPlayer();
         binding.joystick.setOnMoveListener((angle, strength) -> {
@@ -99,8 +101,8 @@ public class GameScreenFragment extends Fragment {
             float currentY = player.getY() + dy;
             int wall = 10;
             if (
-                    currentX <= DeviceUtil.getScreenWidth() - GameUtil.toAngle(DeviceUtil.getScreenWidth(), wall)
-                            && currentX >= GameUtil.toAngle(DeviceUtil.getScreenWidth(), wall)
+                    currentX <= DeviceUtil.getScreenWidth() - ScreenUtil.widthToAngle(wall)
+                            && currentX >= ScreenUtil.widthToAngle(wall)
             ) {
                 player.setTranslationX(dx);
             }
@@ -116,17 +118,17 @@ public class GameScreenFragment extends Fragment {
         });
 
         binding.joystickLayout.setOnDragListener((v, event) -> {
-            //todo not working properly
             binding.joystick.setVisibility(View.VISIBLE);
             binding.joystick.setTranslationX(v.getX());
             binding.joystick.setTranslationY(v.getY());
             return true;
         });
+
         binding.joystickLayout.setOnTouchListener((v, event) -> {
             binding.joystick.setVisibility(View.VISIBLE);
             binding.joystick.setTranslationX(v.getX());
             binding.joystick.setTranslationY(v.getY());
-            return true;
+            return false;
         });
 
         binding.shoot.setOnClickListener(v -> {

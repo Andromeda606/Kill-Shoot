@@ -9,6 +9,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import com.androsoft.killshot.constant.NetworkTags;
 
 public class NetworkConnectedThread implements StreamInterface {
     String local;
@@ -79,17 +80,17 @@ public class NetworkConnectedThread implements StreamInterface {
 
     public static void setOnGameProcess(BattleInterface.OnGameProcess onGameProcess) {
         setOnMessageEvent((data, ipAddress) -> {
-            if (data.equals("SHOOT")) {
+            if (data.equals(NetworkTags.GAME_SHOOT)) {
                 onGameProcess.shoot();
                 return;
             } else if (data.contains(":") && !data.contains("chr")) {
                 String[] xy = data.split(":");
                 onGameProcess.xyStatus(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
                 return;
-            } else if(data.equals("paired")){
+            } else if(data.equals(NetworkTags.GAME_PAIRED)){
                 onGameProcess.paired();
                 return;
-            } else if (data.equals("pairedSuccess")) {
+            } else if (data.equals(NetworkTags.GAME_PAIRED_SUCCESS)) {
                 onGameProcess.pairedSuccessfull();
                 return;
             }
@@ -100,13 +101,13 @@ public class NetworkConnectedThread implements StreamInterface {
     public static void setOnBattleInit(BattleInterface.OnBattleInit onBattleInit) {
         setOnMessageEvent((data, ipAddress) -> {
             switch (data) {
-                case "find":
+                case NetworkTags.FIND:
                     onBattleInit.onRequest(ipAddress);
                     return;
-                case "accept":
+                case NetworkTags.ACCEPT_BATTLE_REQUEST:
                     onBattleInit.catchProcess(ipAddress, true);
                     return;
-                case "reject":
+                case NetworkTags.REJECT_BATTLE_REQUEST:
                     onBattleInit.catchProcess(ipAddress, false);
                     return;
             }
@@ -117,26 +118,26 @@ public class NetworkConnectedThread implements StreamInterface {
     }
 
     public void sendPaired(){
-        sendMessage("paired");
+        sendMessage(NetworkTags.GAME_PAIRED);
     }
 
     public void sendPairedSuccess(){
-        sendMessage("pairedSuccess");
+        sendMessage(NetworkTags.GAME_PAIRED_SUCCESS);
     }
 
     @Override
     public void findDevice() {
-        sendMessage("find");
+        sendMessage(NetworkTags.FIND);
     }
 
     @Override
     public void acceptBattle() {
-        sendMessage("accept");
+        sendMessage(NetworkTags.ACCEPT_BATTLE_REQUEST);
     }
 
     @Override
     public void rejectBattle() {
-        sendMessage("reject");
+        sendMessage(NetworkTags.REJECT_BATTLE_REQUEST);
     }
 
     @Override
@@ -151,6 +152,6 @@ public class NetworkConnectedThread implements StreamInterface {
 
     @Override
     public void shoot() {
-        sendMessage("SHOOT");
+        sendMessage(NetworkTags.GAME_SHOOT);
     }
 }

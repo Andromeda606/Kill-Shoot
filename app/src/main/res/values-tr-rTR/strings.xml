@@ -6,9 +6,9 @@
     <!-- Karakter Detayları -->
     <string name="game_character_1_description">Mermileri bir şerit halinde gönderen ve ultisinde bir alanda kalıcı bir lazer bırakan gemi.
     </string>
-    <string name="game_character_2_description">Yavaş ancak izleyen roketi gönderen gemi. Ultisiyle 4 roket gönderir.
+    <string name="game_character_2_description">Yavaş ancak izleyen roketi gönderen gemi.
     </string>
-    <string name="game_character_3_description">Yuvarlak mayınlar gönderir ve düşman varınca patlar. Ultisiyle daha büyük bir mayın bırakır. Diğerlerinden daha fazla canı vardır.
+    <string name="game_character_3_description">Yuvarlak mayınlar gönderir ve düşman varınca patlar.
     </string>
     <!-- Oyun Kök Etiketleri -->
     <string name="enemy_dead">Kazandınız!</string>
