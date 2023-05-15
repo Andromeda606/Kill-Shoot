@@ -9,6 +9,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 import com.androsoft.killshot.constant.NetworkTags;
 
 public class NetworkConnectedThread implements StreamInterface {
@@ -34,7 +35,7 @@ public class NetworkConnectedThread implements StreamInterface {
                 } catch (IOException e) {
                     Log.wtf("IOException", e.getMessage());
                     throw new RuntimeException(e);
-                } catch (SecurityException e){
+                } catch (SecurityException e) {
                     Log.wtf("SecurityException", e.getMessage());
                     throw new RuntimeException(e);
                 }
@@ -45,6 +46,7 @@ public class NetworkConnectedThread implements StreamInterface {
 
 
     static DatagramSocket dsocket = null;
+
     public static void setOnMessageEvent(BattleInterface onMessageEvent) {
         new Thread() {
             @Override
@@ -64,8 +66,8 @@ public class NetworkConnectedThread implements StreamInterface {
                     }
                 } catch (IOException e) {
                     Log.wtf("UDP ALINIRKEN HATA", e.getMessage());
-                    if(e.getMessage() != null && e.getMessage().contains("EADDRINUSE")){
-                        if (dsocket != null){
+                    if (e.getMessage() != null && e.getMessage().contains("EADDRINUSE")) {
+                        if (dsocket != null) {
                             dsocket.close();
                             dsocket.disconnect();
                         }
@@ -87,7 +89,7 @@ public class NetworkConnectedThread implements StreamInterface {
                 String[] xy = data.split(":");
                 onGameProcess.xyStatus(Float.parseFloat(xy[0]), Float.parseFloat(xy[1]));
                 return;
-            } else if(data.equals(NetworkTags.GAME_PAIRED)){
+            } else if (data.equals(NetworkTags.GAME_PAIRED)) {
                 onGameProcess.paired();
                 return;
             } else if (data.equals(NetworkTags.GAME_PAIRED_SUCCESS)) {
@@ -117,11 +119,11 @@ public class NetworkConnectedThread implements StreamInterface {
         });
     }
 
-    public void sendPaired(){
+    public void sendPaired() {
         sendMessage(NetworkTags.GAME_PAIRED);
     }
 
-    public void sendPairedSuccess(){
+    public void sendPairedSuccess() {
         sendMessage(NetworkTags.GAME_PAIRED_SUCCESS);
     }
 

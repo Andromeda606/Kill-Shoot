@@ -1,5 +1,7 @@
 package com.androsoft.killshot.fragment;
 
+import android.net.InetAddresses;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,9 @@ import com.androsoft.killshot.dialog.CustomDialog;
 import com.androsoft.killshot.dialog.InfoDialog;
 import com.androsoft.killshot.util.DeviceUtil;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 public class NetworkSelectFragment extends Fragment {
@@ -34,7 +39,8 @@ public class NetworkSelectFragment extends Fragment {
 
         requireActivity().runOnUiThread(() -> {
             View view = getView();
-            if (view == null) return; // View null olabilir çünkü navigate edildikten sonra çağrılabilir (127.0.0.1 yüzünden)
+            if (view == null)
+                return; // View null olabilir çünkü navigate edildikten sonra çağrılabilir (127.0.0.1 yüzünden)
             Bundle bundle = new Bundle();
             bundle.putString(BundleTags.IP_ADDRESS, ipAddress);
             try {
@@ -91,12 +97,25 @@ public class NetworkSelectFragment extends Fragment {
         });
         binding.button.setOnClickListener(v -> {
             String ipAddress = binding.ipAddressText.getText().toString();
-            Network network = new Network(ipAddress);
-            try {
-                network.createConnectedThread().findDevice();
-            } catch (Exception e) {
-                Log.wtf("eerror", e.getMessage());
-            }
+            new Thread(){
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        InetAddress.getByName(ipAddress);
+                    } catch (UnknownHostException e) {
+                        requireActivity().runOnUiThread(() -> CustomDialog.showConnectionErrorDialog(requireContext()));
+                        return;
+                    }
+                    Network network = new Network(ipAddress);
+                    try {
+                        requireActivity().runOnUiThread(() -> network.createConnectedThread().findDevice());
+                    } catch (Exception e) {
+                        Log.wtf("eerror", e.getMessage());
+                    }
+                }
+            }.start();
+
         });
         binding.iconHelp.setOnClickListener(v ->
                 new InfoDialog(requireContext())

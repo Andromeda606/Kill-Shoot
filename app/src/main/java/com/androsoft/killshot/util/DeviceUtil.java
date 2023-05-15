@@ -5,11 +5,13 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 public class DeviceUtil {
@@ -17,25 +19,36 @@ public class DeviceUtil {
         return Build.MODEL;
     }
 
-    public static int getScreenWidth(){
+    public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    public static int getScreenHeight(){
+    public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     public static String getLocalIpAddress() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
+                    if (!inetAddress.isLoopbackAddress()
+                            && inetAddress instanceof Inet4Address
+                    ) {
+                        String ipAddress = inetAddress.getHostAddress();
+                        if (ipAddress == null) {
+                            continue;
+                        }
+                        if (ipAddress.split("\\.")[0].length() == 3) {
+                            // 3 haneli olmayan ip adresleri genelde vlan için,
+                            // dolayısıyla yanlış ip adresi alınmış olabilir
+                            return ipAddress;
+                        }
                     }
                 }
             }
+            return null;
         } catch (SocketException ex) {
             ex.printStackTrace();
         }
@@ -43,7 +56,7 @@ public class DeviceUtil {
         return null;
     }
 
-    public static void vibrate(Context context, int ms){
+    public static void vibrate(Context context, int ms) {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(ms, VibrationEffect.DEFAULT_AMPLITUDE));
