@@ -1,7 +1,5 @@
 package com.androsoft.killshot.fragment;
 
-import android.net.InetAddresses;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import com.androsoft.killshot.dialog.CustomDialog;
 import com.androsoft.killshot.dialog.InfoDialog;
 import com.androsoft.killshot.util.DeviceUtil;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -101,6 +98,7 @@ public class NetworkSelectFragment extends Fragment {
                 @Override
                 public void run() {
                     super.run();
+                    // check ip address
                     try {
                         InetAddress.getByName(ipAddress);
                     } catch (UnknownHostException e) {
