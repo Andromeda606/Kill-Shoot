@@ -43,6 +43,10 @@ public class CharacterSelectFragment extends Fragment {
             Bundle bundle = new Bundle(requireArguments());
             bundle.putString(BundleTags.CHARACTER_TYPE, getPlayerType() + "");
             bundle.putString(BundleTags.ENEMY_TYPE, getEnemyType() + "");
+            if (getView() == null){
+                // User has already navigated to another fragment
+                return;
+            }
             Navigation.findNavController(requireView()).navigate(R.id.action_CharacterSelectFragment_to_GameFragment, bundle);
         });
    }

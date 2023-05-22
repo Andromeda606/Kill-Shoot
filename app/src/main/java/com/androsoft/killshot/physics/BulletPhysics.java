@@ -1,7 +1,9 @@
 package com.androsoft.killshot.physics;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Rect;
+import android.provider.Settings;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,7 +74,7 @@ public class BulletPhysics {
         getActivity().runOnUiThread(() -> gameArea.removeView(bulletImage));
     }
 
-    public PlayerImage getEnemy(Player.Type playerType){
+    public PlayerImage getEnemy(Player.Type playerType) {
         return gameScreenFragment.playerToOtherImage(playerType);
     }
 
@@ -86,6 +88,15 @@ public class BulletPhysics {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                // https://stackoverflow.com/questions/64226137/ignore-developers-settings-animation-scale-in-android
+                float durationScale = Settings.Global.getFloat(gameScreenFragment.requireContext().getContentResolver(),
+                        Settings.Global.ANIMATOR_DURATION_SCALE, 0);
+                if (durationScale != 1) {
+                    try {
+                        ValueAnimator.class.getMethod("setDurationScale", float.class).invoke(null, 1f);
+                    } catch (Throwable ignored) {
+                    }
+                }
                 Activity activity = gameScreenFragment.getActivity();
                 if (activity == null || activity.isFinishing() || activity.isDestroyed())
                     return;
