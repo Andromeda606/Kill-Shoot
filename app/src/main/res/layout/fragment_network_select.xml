@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
+              android:background="@drawable/background_character"
               android:layout_height="match_parent"
               tools:context=".fragment.NetworkSelectFragment" android:orientation="vertical" android:gravity="center">
 
@@ -9,28 +10,25 @@
     <TextView
             android:text="@string/app_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView4" android:gravity="center"/>
+            android:layout_height="wrap_content" android:id="@+id/textView4" android:gravity="center"
+            android:textColor="@color/white"/>
     <TextView
             android:text="@string/enter_enemy_ip_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center"/>
+            android:layout_height="wrap_content" android:id="@+id/textView5" android:gravity="center"
+            android:textColor="@color/white"/>
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/yourIpAddressText" android:gravity="center"/>
+            android:layout_height="wrap_content" android:id="@+id/yourIpAddressText" android:gravity="center"
+            android:textColor="@color/white"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/ipAddressText" android:gravity="center"/>
+            android:id="@+id/ipAddressText" android:gravity="center" android:textColor="@color/white"/>
     <Button
             android:text="@string/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/button"/>
-    <ImageView
-            android:id="@+id/iconHelp"
-            android:src="@drawable/ic_round_info"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-    />
 </LinearLayout>

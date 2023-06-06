@@ -20,7 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/resultGameText" android:layout_weight="1"
                 android:layout_gravity="center" android:textSize="60sp" android:textColor="@color/white"
-                android:gravity="center"/>
+                android:gravity="center" android:text="guhj"/>
     </LinearLayout>
     <LinearLayout
             android:id="@+id/pairingActivity"
@@ -65,14 +65,14 @@
                         android:id="@+id/joystick"
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
-                        app:JV_buttonColor="#FF6E40"
+                        app:JV_buttonColor="#222222"
                         app:JV_buttonSizeRatio="15%"
-                        app:JV_borderColor="#00796B"
-                        app:JV_backgroundColor="#009688"
+                        app:JV_borderColor="#00515151"
+                        app:JV_backgroundColor="#00515151"
                         app:JV_borderWidth="4dp"
                         app:JV_fixedCenter="false"
                         android:layout_gravity="bottom|start"
-                        android:rotation="90" android:visibility="gone"/>
+                        android:rotation="90" android:visibility="visible"/>
             </LinearLayout>
             <LinearLayout
                     android:layout_width="match_parent"
@@ -106,16 +106,14 @@
                 android:textSize="34sp" android:textColor="#FFFFFF" android:textStyle="bold"
                 android:layout_marginTop="30dp" android:layout_marginRight="30dp"/>
         <TextView
+
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
                 android:text="100"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/playerHealth"
                 android:textSize="34sp" android:textColor="#FFFFFF" android:textStyle="bold"
-                android:layout_marginTop="30dp" android:layout_marginLeft="30dp"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView3"
-                android:layout_gravity="center_horizontal"/>
+        />
 
     </FrameLayout>
 </FrameLayout>

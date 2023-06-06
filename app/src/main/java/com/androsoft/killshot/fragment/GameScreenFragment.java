@@ -1,7 +1,7 @@
 package com.androsoft.killshot.fragment;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import com.androsoft.killshot.R;
 import com.androsoft.killshot.connection.BattleInterface;
@@ -72,15 +73,18 @@ public class GameScreenFragment extends Fragment {
         int enemyHealth = getEnemyPlayer().getHealth(), playerHealth = getCurrentPlayer().getHealth();
         binding.enemyHealth.setText(String.valueOf(playerHealth));
         binding.playerHealth.setText(String.valueOf(enemyHealth));
-        if(playerHealth <= 0){
+        if (playerHealth <= 0) {
+            Drawable drawable = ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.background_defeat, null);
             binding.gameArea.setVisibility(View.GONE);
             binding.initialLayout.setVisibility(View.VISIBLE);
-            binding.initialLayout.setBackgroundColor(Color.parseColor("#3D832A"));
+            binding.initialLayout.setBackground(drawable);
             binding.resultGameText.setText(getString(R.string.you_dead));
         }
-        if (enemyHealth <= 0){
+        if (enemyHealth <= 0) {
+            Drawable drawable = ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.background_win, null);
             binding.gameArea.setVisibility(View.GONE);
             binding.initialLayout.setVisibility(View.VISIBLE);
+            binding.initialLayout.setBackground(drawable);
             binding.resultGameText.setText(getString(R.string.enemy_dead));
         }
     }
@@ -94,8 +98,8 @@ public class GameScreenFragment extends Fragment {
             float dx = (float) Math.sin(Math.toRadians(angle)) * width;
             float dy = (float) Math.cos(Math.toRadians(angle)) * player.getHeight();
 
-            dx = player.getTranslationX() + dx * strength / 300;
-            dy = player.getTranslationY() + dy * strength / 300;
+            dx = player.getTranslationX() + dx * strength / 200;
+            dy = player.getTranslationY() + dy * strength / 200;
 
             float currentX = player.getX() + dx;
             float currentY = player.getY() + dy;
@@ -150,11 +154,10 @@ public class GameScreenFragment extends Fragment {
         binding = FragmentGameScreenBinding.inflate(inflater);
         PlayerImage player = getCurrentPlayer();
         PlayerImage enemyPlayer = getEnemyPlayer();
-        binding.textView3.setText(DeviceUtil.getLocalIpAddress());
         // Syncing all bullets
         BulletPhysics.syncBullets(this, binding.gameArea);
         Bundle arguments = getArguments();
-        if(arguments == null){
+        if (arguments == null) {
             throw new RuntimeException("argument is null");
         }
         binding.pairingActivity.setVisibility(View.VISIBLE);
@@ -185,7 +188,6 @@ public class GameScreenFragment extends Fragment {
             public void shoot() {
                 getEnemyPlayer().shoot();
             }
-
 
             @Override
             public void xyStatus(float x, float y) {

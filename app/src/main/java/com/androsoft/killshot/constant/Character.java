@@ -58,15 +58,15 @@ public abstract class Character {
                         R.drawable.ic_game_bullet2,
                         1500,
                         1000,
-                        R.string.game_character_1_title,
-                        R.string.game_character_1_description
+                        R.string.game_character_2_title,
+                        R.string.game_character_2_description
                 );
             case 2:
                 return new Circler(
                         bulletPhysics,
                         150,
                         25,
-                        600,
+                        1500,
                         R.drawable.ic_game_character3,
                         R.drawable.ic_game_bullet3,
                         2500,

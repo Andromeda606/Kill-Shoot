@@ -4,7 +4,7 @@
     <!-- Uygulama adı -->
     <string name="local_ip_address">IP Adresiniz: %s</string>
     <!-- Karakter Detayları -->
-    <string name="game_character_1_description">Mermileri bir şerit halinde gönderen ve ultisinde bir alanda kalıcı bir lazer bırakan gemi.
+    <string name="game_character_1_description">Mermileri bir şerit halinde gönderen gemi.
     </string>
     <string name="game_character_2_description">Yavaş ancak izleyen roketi gönderen gemi.
     </string>
@@ -20,6 +20,9 @@
     <string name="accept">Kabul</string>
     <string name="reject">Reddet</string>
     <string name="warning">Uyarı</string>
+    <string name="start_game">Oyunu Başlat</string>
+    <string name="contributors">Emeği Geçenler</string>
+    <string name="exit_game">Oyundan Çık</string>
     <!-- Savaş İsteği -->
     <string name="enemy_selected">Düşman Karakterini Seçti, Seçilen: %s</string>
     <string name="enter_enemy_ip_address">Düşman IP Adresini Girin</string>

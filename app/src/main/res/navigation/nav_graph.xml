@@ -3,12 +3,23 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-                app:startDestination="@id/NetworkSelectFragment">
+                app:startDestination="@id/WelcomeScreenFragment">
+
+    <fragment
+            android:id="@+id/WelcomeScreenFragment"
+            android:name="com.androsoft.killshot.fragment.WelcomeScreenFragment"
+            tools:layout="@layout/fragment_welcome_screen">
+        <action android:id="@+id/action_WelcomeScreenFragment_to_NetworkSelectFragment"
+                app:destination="@id/NetworkSelectFragment"/>
+    </fragment>
+
+
     <fragment
             android:id="@+id/NetworkSelectFragment"
             android:name="com.androsoft.killshot.fragment.NetworkSelectFragment"
             tools:layout="@layout/fragment_network_select">
-        <action android:id="@+id/action_NetworkSelectFragment_to_CharacterSelectFragment" app:destination="@id/CharacterSelectFragment"/>
+        <action android:id="@+id/action_NetworkSelectFragment_to_CharacterSelectFragment"
+                app:destination="@id/CharacterSelectFragment"/>
     </fragment>
 
     <fragment
